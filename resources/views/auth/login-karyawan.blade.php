@@ -24,10 +24,10 @@
                                 <div class="lg:py4 relative flex min-w-0 flex-col break-words rounded-2xl border-0 bg-transparent bg-clip-border shadow-none dark:bg-gray-950">
                                     <div class="mb-0 p-6 pb-0">
                                         <h4 class="font-bold">Login</h4>
-                                        <p class="mb-0">Enter your nik and password to sign in</p>
+                                        <p class="mb-0">Masukkan alamat email dan password untuk Login</p>
                                     </div>
                                     <div class="flex-auto p-6">
-                                        @error('nik')
+                                        @error('user_id')
                                             <div role="alert" class="alert alert-error mb-4">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                                 <span>{{ $message }}</span>
@@ -42,7 +42,7 @@
                                         <form role="form" action="{{ route('login.auth') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-4">
-                                                <input type="text" name="nik" placeholder="NIK" class="focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 text-sm font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none dark:bg-gray-950 dark:text-white/80 dark:placeholder:text-white/80" autofocus required />
+                                                <input type="email" name="email" placeholder="Email" class="focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 text-sm font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none dark:bg-gray-950 dark:text-white/80 dark:placeholder:text-white/80" autofocus required />
                                             </div>
                                             <div class="mb-4">
                                                 <input type="password" name="password" placeholder="Password" class="focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 text-sm font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none dark:bg-gray-950 dark:text-white/80 dark:placeholder:text-white/80" required />

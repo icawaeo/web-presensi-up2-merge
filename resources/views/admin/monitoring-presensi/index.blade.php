@@ -23,7 +23,7 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        <th>NIK</th>
+                        {{-- <th>NIK</th> --}}
                         <th>Nama Karyawan</th>
                         <th>Departemen</th>
                         <th>Jam Masuk</th>
@@ -37,14 +37,14 @@
                     @foreach ($monitoring as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $monitoring->firstItem() + $value }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nik }}</td>
+                            <td class="text-slate-500 dark:text-slate-300">{{ $item->user_id }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_departemen }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->jam_masuk }}</td>
                             <td class="text-slate-500 dark:text-slate-300">
                                 <div class="avatar">
                                     <div class="w-24 rounded">
-                                        <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_masuk', '{{ $item->nik }}')">
+                                        <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_masuk', '{{ $item->user_id }}')">
                                             <img src="{{ asset("storage/unggah/presensi/$item->foto_masuk") }}" alt="{{ $item->foto_masuk }}" />
                                         </label>
                                     </div>
@@ -61,7 +61,7 @@
                                 <div class="avatar">
                                     <div class="w-24 rounded">
                                         @if ($item->foto_keluar)
-                                            <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_keluar', '{{ $item->nik }}')">
+                                            <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_keluar', '{{ $item->user_id }}')">
                                                 <img src="{{ asset("storage/unggah/presensi/$item->foto_keluar") }}" alt="{{ $item->foto_keluar }}" />
                                             </label>
                                         @else
@@ -162,7 +162,7 @@
             }).addTo(map);
         }
 
-        function viewLokasi(tipe, nik) {
+        function viewLokasi(tipe, user_id) {
             // Loading effect start
             let loading = `<span class="loading loading-dots loading-md text-purple-600"></span>`;
             $("#loading_edit1").html(loading);
@@ -173,7 +173,7 @@
                 data: {
                     "_token": "{{ csrf_token() }}",
                     "tipe": tipe,
-                    "nik": nik,
+                    "user_id": user_id,
                 },
                 success: function(data) {
                     // console.log(data);

@@ -16,7 +16,7 @@ class KaryawanSeeder extends Seeder
     public function run(): void
     {
         Karyawan::create([
-            'nik' => '12345',
+            'user_id' => '12345',
             'departemen_id' => '1',
             'nama_lengkap' => 'Dummy',
             'foto' => '12345.jpg',
@@ -27,7 +27,7 @@ class KaryawanSeeder extends Seeder
         ]);
 
         Karyawan::create([
-            'nik' => '12346',
+            'user_id' => '12346',
             'departemen_id' => '2',
             'nama_lengkap' => 'Wati',
             'jabatan' => 'Karyawan',
@@ -37,7 +37,7 @@ class KaryawanSeeder extends Seeder
         ]);
 
         Karyawan::create([
-            'nik' => '12347',
+            'user_id' => '12347',
             'departemen_id' => '3',
             'nama_lengkap' => 'Mawar',
             'jabatan' => 'Karyawan',
@@ -47,7 +47,7 @@ class KaryawanSeeder extends Seeder
         ]);
 
         Karyawan::create([
-            'nik' => '12348',
+            'user_id' => '12348',
             'departemen_id' => '3',
             'nama_lengkap' => 'Melati',
             'jabatan' => 'Karyawan',

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('pengajuan_presensi', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
+            $table->string('user_id');
             $table->date('tanggal_pengajuan');
             $table->char('status', 1);
             $table->text('keterangan')->nullable();
             $table->char('status_approved', 1)->default(1);
-            $table->foreign('nik')->references('nik')->on('karyawan');
+            $table->foreign('user_id')->references('user_id')->on('karyawan');
             $table->timestamps();
         });
     }

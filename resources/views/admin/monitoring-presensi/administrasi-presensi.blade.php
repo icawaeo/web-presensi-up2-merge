@@ -11,12 +11,12 @@
         <div>
             <form action="{{ route("admin.administrasi-presensi") }}" method="get" enctype="multipart/form-data" class="my-3">
                 <div class="flex w-full flex-wrap gap-2 md:flex-nowrap items-end">
-                    <label class="form-control w-full max-w-xs">
+                    {{-- <label class="form-control w-full max-w-xs">
                         <div class="label">
                             <span class="label-text">NIK</span>
                         </div>
                         <input type="text" name="nik" placeholder="NIK" class="input input-bordered w-full" value="{{ request()->nik }}" />
-                    </label>
+                    </label> --}}
                     <label class="form-control w-full max-w-xs">
                         <div class="label">
                             <span class="label-text">Nama Karyawan</span>
@@ -78,8 +78,8 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        <th>Nama Karyawan / NIK</th>
-                        <th>Departemen</th>
+                        <th>Nama Karyawan</th>
+                        <th>Pekerjaan</th>
                         <th>Tanggal Pengajuan</th>
                         <th>Status</th>
                         <th>Keterangan</th>
@@ -90,7 +90,7 @@
                     @foreach ($pengajuan as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $value + 1 }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }} - {{ $item->nik }}</td>
+                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }} - {{ $item->user_id }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_departemen }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format("l, d-m-Y") }}</td>
                             <td class="text-slate-500 dark:text-slate-300">

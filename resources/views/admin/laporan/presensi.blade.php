@@ -17,7 +17,7 @@
                     <select name="karyawan" class="select select-bordered w-full text-blue-700" required>
                         <option disabled selected>Pilih karyawan!</option>
                         @foreach ($karyawan as $item)
-                            <option value="{{ $item->nik }}">{{ $item->nama_lengkap }}</option>
+                            <option value="{{ $item->user_id }}">{{ $item->nama_lengkap }}</option>
                         @endforeach
                     </select>
                     <button type="submit" class="btn btn-error w-full lg:w-14">

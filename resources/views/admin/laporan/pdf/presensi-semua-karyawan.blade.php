@@ -116,8 +116,8 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Nama Karyawan / NIK</th>
-                    <th>Jabatan / Departemen</th>
+                    <th>Nama Karyawan</th>
+                    <th>Pekerjaan</th>
                     <th>Jumlah Kehadiran</th>
                     <th>Jumlah Terlambat</th>
                 </tr>
@@ -129,7 +129,7 @@
                             {{ $value + 1 . "." }}
                         </td>
                         <td>
-                            {{ $item->nama_karyawan }} - {{ $item->nik }}
+                            {{ $item->nama_karyawan }} - {{ $item->user_id }}
                         </td>
                         <td>
                             {{ $item->jabatan_karyawan }} - {{ $item->nama_departemen }}

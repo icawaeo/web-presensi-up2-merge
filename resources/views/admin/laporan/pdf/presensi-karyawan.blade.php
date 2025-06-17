@@ -122,11 +122,11 @@
                     @endif
                 </td>
             </tr>
-            <tr>
-                <td>NIK</td>
+            {{-- <tr>
+                <td>user_id</td>
                 <td>:</td>
-                <td>{{ $karyawan->nik }}</td>
-            </tr>
+                <td>{{ $karyawan->user_id }}</td>
+            </tr> --}}
             <tr>
                 <td>Nama Karyawan</td>
                 <td>:</td>

@@ -15,7 +15,7 @@ class PresensiSeeder extends Seeder
     {
         for ($i = 1; $i <= 30; $i++) {
             DB::table('presensi')->insert([
-                "nik" => "12345",
+                "user_id" => "12345",
                 "tanggal_presensi" => date_create("2024-".Carbon::now()->format('m')."-" . $i)->format("Y-m-d"),
                 "jam_masuk" => date_create("07:" . rand(1,59) . ":" . rand(1,59))->format("H:i:s"),
                 "jam_keluar" => date_create(rand(15,20) . ":" . rand(1,59) . ":" . rand(1,59))->format("H:i:s"),
@@ -28,7 +28,7 @@ class PresensiSeeder extends Seeder
             ]);
 
             DB::table('presensi')->insert([
-                "nik" => "12346",
+                "user_id" => "12346",
                 "tanggal_presensi" => date_create("2024-".Carbon::now()->format('m')."-" . $i)->format("Y-m-d"),
                 "jam_masuk" => date_create("07:" . rand(1,59) . ":" . rand(1,59))->format("H:i:s"),
                 "jam_keluar" => date_create(rand(15,20) . ":" . rand(1,59) . ":" . rand(1,59))->format("H:i:s"),

@@ -16,12 +16,12 @@ class DashboardController extends Controller
         $hariIni = Carbon::now()->format("Y-m-d");
         $user = Auth::guard('karyawan')->user();
         $presensiHariIni = DB::table("presensi")
-            ->where('nik', $user->nik)
+            ->where('user_id', $user->user_id)
             ->where('tanggal_presensi', $hariIni)
             ->first();
 
         $riwayatPresensi = DB::table("presensi")
-            ->where('nik', $user->nik)
+            ->where('user_id', $user->user_id)
             // Cara 1 mencari tanggal
             ->whereMonth('tanggal_presensi', date('m'))
             ->whereYear('tanggal_presensi', date('Y'))
@@ -29,8 +29,8 @@ class DashboardController extends Controller
             ->paginate(10);
 
         $rekapPresensi = DB::table("presensi")
-            ->selectRaw("COUNT(nik) as jml_kehadiran, SUM(IF (jam_masuk > '08:00',1,0)) as jml_terlambat")
-            ->where('nik', $user->nik)
+            ->selectRaw("COUNT(user_id) as jml_kehadiran, SUM(IF (jam_masuk > '08:00',1,0)) as jml_terlambat")
+            ->where('user_id', $user->user_id)
             // Cara 2 mencari tanggal
             ->whereRaw("MONTH(tanggal_presensi)='" . date('m') . "'")
             ->whereRaw("YEAR(tanggal_presensi)='" . date('Y') . "'")
@@ -38,14 +38,14 @@ class DashboardController extends Controller
 
         $rekapPengajuanPresensi = DB::table("pengajuan_presensi")
             ->selectRaw("SUM(IF (status = 'I',1,0)) as jml_izin, SUM(IF (status = 'S',1,0)) as jml_sakit")
-            ->where('nik', $user->nik)
+            ->where('user_id', $user->user_id)
             ->where('status_approved', 1)
             ->whereRaw("MONTH(tanggal_pengajuan)='" . date('m') . "'")
             ->whereRaw("YEAR(tanggal_pengajuan)='" . date('Y') . "'")
             ->first();
 
         $leaderboard = DB::table("presensi as p")
-            ->join('karyawan as k', 'k.nik', '=', 'p.nik')
+            ->join('karyawan as k', 'k.user_id', '=', 'p.user_id')
             ->where('tanggal_presensi', $hariIni)
             ->orderBy('jam_masuk', 'asc')
             ->paginate(10);
@@ -62,7 +62,7 @@ class DashboardController extends Controller
         $totalKaryawan = Karyawan::count();
 
         $rekapPresensi = DB::table("presensi")
-            ->selectRaw("COUNT(nik) as jml_kehadiran, SUM(IF (jam_masuk > '08:00',1,0)) as jml_terlambat")
+            ->selectRaw("COUNT(user_id) as jml_kehadiran, SUM(IF (jam_masuk > '08:00',1,0)) as jml_terlambat")
             ->where('tanggal_presensi', $hariIni)
             ->first();
 

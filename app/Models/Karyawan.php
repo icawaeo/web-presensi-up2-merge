@@ -11,11 +11,11 @@ class Karyawan extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = "karyawan";
-    protected $primaryKey = "nik";
+    protected $primaryKey = "user_id";
     protected $guard = "karyawan";
 
     protected $fillable = [
-        'nik',
+        'user_id',
         'departemen_id',
         'nama_lengkap',
         'jabatan',

@@ -15,22 +15,22 @@ class KaryawanController extends Controller
     public function index()
     {
         $title = "Profile";
-        $karyawan = Karyawan::where('nik', auth()->guard('karyawan')->user()->nik)->first();
+        $karyawan = Karyawan::where('user_id', auth()->guard('karyawan')->user()->user_id)->first();
         return view('dashboard.profile.index', compact('title', 'karyawan'));
     }
 
     public function update(Request $request)
     {
-        $karyawan = Karyawan::where('nik', auth()->guard('karyawan')->user()->nik)->first();
+        $karyawan = Karyawan::where('user_id', auth()->guard('karyawan')->user()->user_id)->first();
 
         if ($request->hasFile('foto')) {
-            $foto = $karyawan->nik . "." . $request->file('foto')->getClientOriginalExtension();
+            $foto = $karyawan->user_id . "." . $request->file('foto')->getClientOriginalExtension();
         } else {
             $foto = $karyawan->foto;
         }
 
         if ($request->password != null) {
-            $update = Karyawan::where('nik', auth()->guard('karyawan')->user()->nik)->update([
+            $update = Karyawan::where('user_id', auth()->guard('karyawan')->user()->user_id)->update([
                 'nama_lengkap' => $request->nama_lengkap,
                 'telepon' => $request->telepon,
                 'password' => Hash::make($request->password),
@@ -39,7 +39,7 @@ class KaryawanController extends Controller
             ]);
 
         } elseif ($request->password == null) {
-            $update = Karyawan::where('nik', auth()->guard('karyawan')->user()->nik)->update([
+            $update = Karyawan::where('user_id', auth()->guard('karyawan')->user()->user_id)->update([
                 'nama_lengkap' => $request->nama_lengkap,
                 'telepon' => $request->telepon,
                 'foto' => $foto,
@@ -79,18 +79,18 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nik' => 'required|unique:karyawan,nik',
-            'departemen_id' => 'required',
+            'user_id' => 'required|unique:karyawan,user_id',
+            'pekerjaan_id' => 'required',
             'nama_lengkap' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'jabatan' => 'required|string|max:255',
+            'pekerjaan' => 'required|string|max:255',
             'telepon' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:karyawan,email',
             'password' => 'required',
         ]);
         $data['password'] = Hash::make($data['password']);
         if ($request->hasFile('foto')) {
-            $foto = $request->nik . "." . $request->file('foto')->getClientOriginalExtension();
+            $foto = $request->user_id . "." . $request->file('foto')->getClientOriginalExtension();
         }
 
         $create = Karyawan::create($data);
@@ -108,52 +108,52 @@ class KaryawanController extends Controller
 
     public function edit(Request $request)
     {
-        $data = Karyawan::where('nik', $request->nik)->first();
+        $data = Karyawan::where('user_id', $request->user_id)->first();
         return $data;
     }
 
     public function updateAdmin(Request $request)
     {
-        $karyawan = Karyawan::where('nik', $request->nik_lama)->first();
+        $karyawan = Karyawan::where('user_id', $request->user_id_lama)->first();
         $data = $request->validate([
-            'nik' => ['required', Rule::unique('karyawan')->ignore($karyawan)],
-            'departemen_id' => 'required',
+            'user_id' => ['required', Rule::unique('karyawan')->ignore($karyawan)],
+            'pekerjaan_id' => 'required',
             'nama_lengkap' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'jabatan' => 'required|string|max:255',
+            'pekerjaan' => 'required|string|max:255',
             'telepon' => 'required|string|max:15',
             'email' => ['required', 'email', Rule::unique('karyawan')->ignore($karyawan)],
         ]);
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->nik . "." . $request->file('foto')->getClientOriginalExtension();
+            $data['foto'] = $request->user_id . "." . $request->file('foto')->getClientOriginalExtension();
         }
 
-        $update = Karyawan::where('nik', $request->nik_lama)->update($data);
+        $update = Karyawan::where('user_id', $request->user_id_lama)->update($data);
 
         if ($update) {
             if ($request->hasFile('foto')) {
                 $folderPath = "public/unggah/karyawan/";
                 $request->file('foto')->storeAs($folderPath, $data['foto']);
             }
-            return to_route('admin.karyawan')->with('success', 'Data Karyawan berhasil diperbarui');
+            return to_route('admin.karyawan')->with('success', 'Data User berhasil diperbarui');
         } else {
-            return to_route('admin.karyawan')->with('error', 'Data Karyawan gagal diperbarui');
+            return to_route('admin.karyawan')->with('error', 'Data User gagal diperbarui');
         }
     }
 
     public function delete(Request $request)
     {
-        $data = Karyawan::where('nik', $request->nik)->first();
-        $delete = Karyawan::where('nik', $request->nik)->delete();
+        $data = Karyawan::where('user_id', $request->user_id)->first();
+        $delete = Karyawan::where('user_id', $request->user_id)->delete();
         if ($delete && $data->foto) {
             $folderPath = "public/unggah/karyawan/";
             Storage::delete($folderPath . $data->foto);
         }
 
         if ($delete) {
-            return response()->json(['success' => true, 'message' => 'Data Karyawan Berhasil dihapus']);
+            return response()->json(['success' => true, 'message' => 'Data User Berhasil dihapus']);
         } else {
-            return response()->json(['success' => false, 'message' => 'Data Karyawan Gagal dihapus']);
+            return response()->json(['success' => false, 'message' => 'Data User Gagal dihapus']);
         }
     }
 }

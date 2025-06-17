@@ -60,10 +60,10 @@
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->telepon }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->email }}</td>
                             <td>
-                                <label class="btn btn-warning btn-sm" for="edit_button" onclick="return edit_button('{{ $item->nik }}')">
+                                <label class="btn btn-warning btn-sm" for="edit_button" onclick="return edit_button('{{ $item->user_id }}')">
                                     <i class="ri-pencil-fill"></i>
                                 </label>
-                                <label class="btn btn-error btn-sm" onclick="return delete_button('{{ $item->nik }}', '{{ $item->nama_lengkap }}')">
+                                <label class="btn btn-error btn-sm" onclick="return delete_button('{{ $item->user_id }}', '{{ $item->nama_lengkap }}')">
                                     <i class="ri-delete-bin-line"></i>
                                 </label>
                             </td>
@@ -94,11 +94,11 @@
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
-                                <span class="label-text font-semibold">NIK<span class="text-red-500">*</span></span>
+                                <span class="label-text font-semibold">user_id<span class="text-red-500">*</span></span>
                             </span>
                         </div>
-                        <input type="text" name="nik" placeholder="NIK" class="input input-bordered w-full text-blue-700" value="{{ old("nik") }}" required />
-                        @error("nik")
+                        <input type="text" name="user_id" placeholder="user_id" class="input input-bordered w-full text-blue-700" value="{{ old("user_id") }}" required />
+                        @error("user_id")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
@@ -223,14 +223,14 @@
             <div>
                 <form action="{{ route("admin.karyawan.update") }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="text" name="nik_lama" hidden>
+                    <input type="text" name="user_id_lama" hidden>
                     <label class="form-control w-full">
                         <div class="label">
-                            <span class="label-text font-semibold">NIK<span class="text-red-500">*</span></span>
+                            <span class="label-text font-semibold">user_id<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit1"></span>
                         </div>
-                        <input type="text" name="nik" placeholder="NIK" class="input input-bordered w-full text-blue-700" required />
-                        @error("nik")
+                        <input type="text" name="user_id" placeholder="user_id" class="input input-bordered w-full text-blue-700" required />
+                        @error("user_id")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
@@ -368,7 +368,7 @@
             });
         @endif
 
-        function edit_button(nik) {
+        function edit_button(user_id) {
             // Loading effect start
             let loading = `<span class="loading loading-dots loading-md text-purple-600"></span>`;
             $("#loading_edit1").html(loading);
@@ -386,7 +386,7 @@
                 url: "{{ route('admin.karyawan.edit') }}",
                 data: {
                     "_token": "{{ csrf_token() }}",
-                    "nik": nik
+                    "user_id": user_id
                 },
                 success: function(data) {
                     // console.log(data);
@@ -395,8 +395,8 @@
                         items.push(val);
                     });
 
-                    $("input[name='nik_lama']").val(items[0]);
-                    $("input[name='nik']").val(items[0]);
+                    $("input[name='user_id_lama']").val(items[0]);
+                    $("input[name='user_id']").val(items[0]);
                     $("input[name='nama_lengkap']").val(items[2]);
                     $("input[name='jabatan']").val(items[4]);
                     $("input[name='telepon']").val(items[5]);
@@ -429,7 +429,7 @@
             });
         }
 
-        function delete_button(nik, nama) {
+        function delete_button(user_id, nama) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 html: "<p>Data yang dihapus tidak dapat dipulihkan kembali!</p>" +
@@ -450,7 +450,7 @@
                         url: "{{ route('admin.karyawan.delete') }}",
                         data: {
                             "_token": "{{ csrf_token() }}",
-                            "nik": nik
+                            "user_id": user_id
                         },
                         success: function(response) {
                             Swal.fire({
