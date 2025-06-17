@@ -15,7 +15,7 @@
                 <div class="flex w-full flex-wrap gap-2 lg:flex-nowrap">
                     <input type="month" name="bulan" class="input input-bordered w-full" value="{{ Carbon\Carbon::now()->format("Y-m") }}" required />
                     <select name="karyawan" class="select select-bordered w-full text-blue-700" required>
-                        <option disabled selected>Pilih karyawan!</option>
+                        <option disabled selected>Pilih karyawan</option>
                         @foreach ($karyawan as $item)
                             <option value="{{ $item->user_id }}">{{ $item->nama_lengkap }}</option>
                         @endforeach

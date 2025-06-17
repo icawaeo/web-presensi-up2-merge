@@ -103,7 +103,7 @@
                         PERIODE {{ strtoupper(\Carbon\Carbon::make($bulan)->format("F")) }} TAHUN {{ \Carbon\Carbon::make($bulan)->format("Y") }} <br>
                     </span>
                     <span class="title" style="margin-left: 0.5rem;">
-                        PT ABCD DEFG <br>
+                        PT PLN (Persero) UPP Sulawesi Utara<br>
                     </span>
                     <span style="margin-left: 0.5rem;">
                         <i>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium, vero.</i>
@@ -128,12 +128,12 @@
                 <td>{{ $karyawan->user_id }}</td>
             </tr> --}}
             <tr>
-                <td>Nama Karyawan</td>
+                <td>Nama</td>
                 <td>:</td>
                 <td>{{ $karyawan->nama_lengkap }}</td>
             </tr>
             <tr>
-                <td>Jabatan</td>
+                <td>Pekerjaan</td>
                 <td>:</td>
                 <td>{{ $karyawan->jabatan }}</td>
             </tr>
@@ -215,7 +215,7 @@
         <table class="pengesahan-atasan">
             <tr class="tempat">
                 <td colspan="2">
-                    Tenetur Nostrum, {{ \Carbon\Carbon::now()->format("d F Y") }}
+                    Manado, {{ \Carbon\Carbon::now()->format("d F Y") }}
                 </td>
             </tr>
             <tr class="atasan">

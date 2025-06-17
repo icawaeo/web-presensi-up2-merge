@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         LokasiKantor::create([
-            'kota' => 'Tenetur Nostrum',
-            'alamat' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium, vero.',
+            'kota' => 'Manado',
+            'alamat' => 'Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara',
             'latitude' => 1.4635002,
             'longitude' => 124.8331226,
             'radius' => 33,

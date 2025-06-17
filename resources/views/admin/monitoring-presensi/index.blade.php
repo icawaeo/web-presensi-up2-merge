@@ -23,9 +23,9 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        {{-- <th>NIK</th> --}}
-                        <th>Nama Karyawan</th>
-                        <th>Departemen</th>
+                        <th>Nama Lengkap</th>
+                        <th>Pekerjaan</th>
+                        <th>Email</th>
                         <th>Jam Masuk</th>
                         <th>Foto & Lokasi</th>
                         <th>Jam Keluar</th>
@@ -37,9 +37,9 @@
                     @foreach ($monitoring as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $monitoring->firstItem() + $value }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->user_id }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_departemen }}</td>
+                            <td class="text-slate-500 dark:text-slate-300">{{ $item->email }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->jam_masuk }}</td>
                             <td class="text-slate-500 dark:text-slate-300">
                                 <div class="avatar">

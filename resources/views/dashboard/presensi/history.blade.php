@@ -42,7 +42,7 @@
                                 <div class="mb-4">
                                     <label for="bulan" class="mb-2 ml-1 inline-block text-xs font-bold text-slate-700 dark:text-white/80">Bulan</label>
                                     <select name="bulan" id="bulan" class="focus:shadow-primary-outline dark:bg-slate-850 leading-5.6 ease select select-bordered block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 text-sm font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none dark:text-white" required>
-                                        <option disabled selected>Pilih Bulan!</option>
+                                        <option disabled selected>Pilih Bulan</option>
                                         @foreach ($bulan as $value => $item)
                                             <option value="{{ $value + 1 }}">{{ $item }}</option>
                                         @endforeach
@@ -53,7 +53,7 @@
                                 <div class="mb-4">
                                     <label for="tahun" class="mb-2 ml-1 inline-block text-xs font-bold text-slate-700 dark:text-white/80">Tahun</label>
                                     <select name="tahun" id="tahun" class="focus:shadow-primary-outline dark:bg-slate-850 leading-5.6 ease select select-bordered block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 text-sm font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none dark:text-white" required>
-                                        <option disabled selected>Pilih Tahun!</option>
+                                        <option disabled selected>Pilih Tahun</option>
                                         @php
                                             $tahunMulai = $riwayatPresensi[0] ? date("Y", strtotime($riwayatPresensi[0]->tanggal_presensi)) : date("Y");
                                         @endphp

@@ -217,7 +217,7 @@ class PresensiController extends Controller
             ->join('departemen as d', 'k.departemen_id', '=', 'd.id')
             ->orderBy('k.nama_lengkap', 'asc')
             ->orderBy('d.kode', 'asc')
-            ->select('p.*', 'k.nama_lengkap as nama_karyawan', 'd.nama as nama_departemen');
+            ->select('p.*', 'k.nama_lengkap as nama_karyawan', 'd.nama as nama_departemen', 'k.email');
 
         if ($request->tanggal_presensi) {
             $query->whereDate('p.tanggal_presensi', $request->tanggal_presensi);
