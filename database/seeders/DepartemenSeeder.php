@@ -15,15 +15,19 @@ class DepartemenSeeder extends Seeder
     {
         Departemen::create([
             'kode' => 'D001',
-            'nama' => 'Technology & Infomation',
+            'nama' => 'Admin',
         ]);
         Departemen::create([
             'kode' => 'D002',
-            'nama' => 'Marketing',
+            'nama' => 'Cleaning Service',
         ]);
         Departemen::create([
             'kode' => 'D003',
-            'nama' => 'Human Resource',
+            'nama' => 'Security',
+        ]);
+        Departemen::create([
+            'kode' => 'D004',
+            'nama' => 'Driver',
         ]);
     }
 }

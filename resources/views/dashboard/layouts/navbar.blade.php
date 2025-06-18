@@ -157,9 +157,9 @@
                 <!-- notifications -->
                 <li class="relative flex items-center pr-2">
                     <p class="transform-dropdown-show hidden"></p>
-                    <a href="javascript:;" class="ease-nav-brand block p-0 text-sm text-white transition-all" dropdown-trigger aria-expanded="false">
+                    {{-- <a href="javascript:;" class="ease-nav-brand block p-0 text-sm text-white transition-all" dropdown-trigger aria-expanded="false">
                         <i class="ri-notification-3-fill cursor-pointer"></i>
-                    </a>
+                    </a> --}}
 
                     <ul dropdown-menu class="transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:text-5.5 dark:shadow-dark-xl dark:bg-slate-850 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent bg-white bg-clip-padding px-2 py-4 text-left text-sm text-slate-500 opacity-0 transition-all before:absolute before:left-auto before:right-2 before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 before:sm:right-8 lg:absolute lg:left-auto lg:right-0 lg:mt-2 lg:block lg:cursor-pointer">
                         <!-- add show class on dropdown open js -->

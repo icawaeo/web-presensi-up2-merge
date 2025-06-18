@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __("Data Karyawan") }}
+                {{ __("Data Non Pegawai") }}
             </h2>
             <label class="btn btn-primary btn-sm" for="create_modal">Tambah Data</label>
         </div>
@@ -12,9 +12,9 @@
         <div>
             <form action="{{ route("admin.karyawan") }}" method="get" enctype="multipart/form-data" class="my-3">
                 <div class="flex w-full flex-wrap gap-2 md:flex-nowrap">
-                    <input type="text" name="nama_karyawan" placeholder="Nama Karyawan" class="input input-bordered w-full md:w-1/2" value="{{ request()->nama_karyawan }}" />
+                    <input type="text" name="nama_karyawan" placeholder="Cari nama" class="input input-bordered w-full md:w-1/2" value="{{ request()->nama_karyawan }}" />
                     <select class="select select-bordered w-full md:w-1/2" name="kode_departemen">
-                        <option disabled selected>Pilih departemen!</option>
+                        <option disabled selected>Pilih pekerjaan</option>
                         @foreach ($departemen as $item)
                             <option value="{{ $item->kode }}" @if ($item->kode == request()->kode_departemen) selected @endif>{{ $item->nama }}</option>
                         @endforeach
@@ -30,7 +30,6 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        <th>Departemen</th>
                         <th>Nama Lengkap</th>
                         <th>Foto</th>
                         <th>Jabatan</th>
@@ -43,7 +42,7 @@
                     @foreach ($karyawan as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $karyawan->firstItem() + $value }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->departemen->kode }}</td>
+                            {{-- <td class="text-slate-500 dark:text-slate-300">{{ $item->departemen->kode }}</td> --}}
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_lengkap }}</td>
                             <td>
                                 <div class="avatar">

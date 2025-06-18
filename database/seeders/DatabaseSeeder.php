@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartemenSeeder::class,
             KaryawanSeeder::class,
-            PresensiSeeder::class,
-            PengajuanPresensiSeeder::class,
+            // PresensiSeeder::class,
+            // PengajuanPresensiSeeder::class,
         ]);
     }
 }
