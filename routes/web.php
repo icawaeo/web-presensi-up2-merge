@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthKaryawanController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController; // Tambahkan ini
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KaryawanController;
@@ -9,13 +9,16 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Hapus atau komentari rute default welcome
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// 1. Jadikan halaman login sebagai halaman utama (root)
+Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
+Route::post('/', [AuthenticatedSessionController::class, 'store'])->middleware('guest')->name('login.store');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,19 +27,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group([
-    'prefix' => 'login-karyawan',
-    'middleware' => ['guest', 'login-karyawan'],
-], function () {
-    Route::get('/', [AuthKaryawanController::class, 'create'])->name('login.view');
-    Route::post('/', [AuthKaryawanController::class, 'store'])->name('login.auth');
-});
-
-Route::group([
     'prefix' => 'karyawan',
     'middleware' => ['karyawan'],
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('karyawan.dashboard');
-    Route::post('/logout', [AuthKaryawanController::class, 'destroy'])->name('logout.auth');
+    // Ubah rute logout untuk karyawan
+    // Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('karyawan.logout');
 
     Route::group([
         'prefix' => 'presensi',
@@ -69,11 +65,16 @@ Route::group([
     });
 });
 
+
 Route::group([
     'prefix' => 'admin',
     'middleware' => ['auth'],
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
+
+    // Ubah rute logout untuk admin
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
+
 
     Route::get('/karyawan', [KaryawanController::class, 'indexAdmin'])->name('admin.karyawan');
     Route::post('/karyawan/tambah', [KaryawanController::class, 'store'])->name('admin.karyawan.store');

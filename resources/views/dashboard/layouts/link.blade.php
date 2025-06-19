@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="{{ asset("css/argon-dashboard-tailwind.css?v=1.0.1") }}">
 <link rel="stylesheet" href="{{ asset("css/perfect-scrollbar.css") }}">
 <link rel="stylesheet" href="{{ asset("css/tooltips.css") }}">
+<link rel="stylesheet" href="{{ asset("css/datatable.css") }}">
 {{-- Fonts and icons --}}
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 {{-- Popper --}}

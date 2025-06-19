@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'alamat' => 'Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara',
             'latitude' => 1.4635002,
             'longitude' => 124.8331226,
-            'radius' => 33,
+            'radius' => 250,
             'is_used' => true,
         ]);
 

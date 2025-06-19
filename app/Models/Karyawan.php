@@ -12,7 +12,7 @@ class Karyawan extends Authenticatable
 
     protected $table = "karyawan";
     protected $primaryKey = "user_id";
-    protected $guard = "karyawan";
+    // protected $guard = "karyawan";
 
     protected $fillable = [
         'user_id',
