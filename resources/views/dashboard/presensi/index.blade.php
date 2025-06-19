@@ -87,7 +87,7 @@
 
         let notifikasi_presensi_masuk = document.getElementById('notifikasi_presensi_masuk');
         let notifikasi_presensi_keluar = document.getElementById('notifikasi_presensi_keluar');
-        let notifikasi_presensi_gagal_radius = document.getElementById('notifikasi_presensi_gagal_radius');
+        let notifikasi_presensi_gagal_radius = document.getElementById('notifikasi_luar_radius');
         $("#take-presensi").click(function() {
             Webcam.snap(function(uri) {
                 image = uri;
@@ -103,47 +103,55 @@
                 },
                 cache: false,
                 success: function(res) {
-                    if (res.status == 200) {
-                        if (res.jenis_presensi == "masuk") {
-                            notifikasi_presensi_masuk.play();
-                        } else if (res.jenis_presensi == "keluar") {
-                            notifikasi_presensi_keluar.play();
-                        }
+                    // Cek jenis presensi dari response controller
+                    if (res.jenis_presensi == "masuk") {
+                        notifikasi_presensi_masuk.play();
                         Swal.fire({
-                            title: "Presensi",
+                            title: "Berhasil!",
                             text: res.message,
                             icon: "success",
                             confirmButtonText: "OK"
                         });
-                        setTimeout("location.href='{{ route("karyawan.dashboard") }}'", 5000);
-
-                    } else if (res.status == 500) {
-                        if (res.jenis_error == "radius") {
-                            notifikasi_presensi_gagal_radius.play();
-                        }
+                    } else if (res.jenis_presensi == "masuk_diluar_radius") {
+                        // Mainkan audio notifikasi luar radius
+                        document.getElementById('notifikasi_luar_radius').play(); 
                         Swal.fire({
-                            title: "Presensi",
+                            title: "Berhasil!",
                             text: res.message,
-                            icon: "error",
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
+                    } else if (res.jenis_presensi == "keluar") {
+                        notifikasi_presensi_keluar.play();
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: res.message,
+                            icon: "success",
                             confirmButtonText: "OK"
                         });
                     }
+
+                    // Timeout untuk reload halaman tetap sama untuk semua kondisi berhasil
+                    setTimeout(function() {
+                        location.href = '{{ route("karyawan.dashboard") }}'
+                    }, 5000);
+
                 }
             });
         });
     </script>
 @endsection
-
+if
 @section("container")
     <div>
         <audio id="notifikasi_presensi_masuk">
-            <source src="{{ asset("audio/notifikasi_presensi_masuk.mp3") }}" type="audio/mpeg">
+            <source src="{{ asset("audio/notifikasi_presensi_masuk_dalam_radius.mp3") }}" type="audio/mpeg">
         </audio>
         <audio id="notifikasi_presensi_keluar">
-            <source src="{{ asset("audio/notifikasi_presensi_keluar.mp3") }}" type="audio/mpeg">
+            <source src="{{ asset("audio/notifikasi_sesudah_bekerja.mp3") }}" type="audio/mpeg">
         </audio>
-        <audio id="notifikasi_presensi_gagal_radius">
-            <source src="{{ asset("audio/notifikasi_presensi_gagal_radius.mp3") }}" type="audio/mpeg">
+        <audio id="notifikasi_luar_radius">
+            <source src="{{ asset("audio/notifikasi_presensi_masuk_diluar_radius.mp3") }}" type="audio/mpeg">
         </audio>
         <div class="-mx-3 flex flex-wrap">
             <div class="mb-6 w-full max-w-full px-3 sm:flex-none">

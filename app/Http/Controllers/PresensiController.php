@@ -32,76 +32,95 @@ class PresensiController extends Controller
         $user_id = auth()->guard('karyawan')->user()->user_id;
         $tglPresensi = date('Y-m-d');
         $jam = date('H:i:s');
-
         $lokasi = $request->lokasi;
-        $folderPath = "public/unggah/presensi/";
-        $folderName = $user_id . "-" . $tglPresensi . "-" . $jenisPresensi;
 
+        // --- LOGIKA VALIDASI RADIUS YANG BARU ---
         $lokasiKantor = LokasiKantor::where('is_used', true)->first();
-        $langtitudeKantor = $lokasiKantor->latitude;
-        $longtitudeKantor = $lokasiKantor->longitude;
         $lokasiUser = explode(",", $lokasi);
         $langtitudeUser = $lokasiUser[0];
         $longtitudeUser = $lokasiUser[1];
 
-        $jarak = round($this->validation_radius_presensi($langtitudeKantor, $longtitudeKantor, $langtitudeUser, $longtitudeUser), 2);
-        if ($jarak > 33) {
-            return response()->json([
-                'status' => 500,
-                'success' => false,
-                'message' => "Anda berada di luar radius kantor. Jarak Anda " . $jarak . " meter dari kantor",
-                'jenis_error' => "radius",
-            ]);
-        }
+        // Hitung jarak
+        $jarak = round($this->validation_radius_presensi($lokasiKantor->latitude, $lokasiKantor->longitude, $langtitudeUser, $longtitudeUser), 2);
 
+        // Tentukan status lokasi berdasarkan jarak, tidak lagi menggagalkan presensi
+        $statusLokasi = ($jarak > $lokasiKantor->radius) ? 'out' : 'in';
+        // --- AKHIR LOGIKA VALIDASI ---
+
+        $cek_presensi_hari_ini = DB::table('presensi')
+            ->where('user_id', $user_id)
+            ->where('tanggal_presensi', $tglPresensi)
+            ->first();
+
+        $folderPath = "public/unggah/presensi/";
+        $folderName = $user_id . "-" . $tglPresensi . "-" . $jenisPresensi;
         $image = $request->image;
         $imageParts = explode(";base64", $image);
         $imageBase64 = base64_decode($imageParts[1]);
-
         $fileName = $folderName . ".png";
         $file = $folderPath . $fileName;
 
-        if ($jenisPresensi == "masuk") {
-            $data = [
-                "user_id" => $user_id,
-                "tanggal_presensi" => $tglPresensi,
-                "jam_masuk" => $jam,
-                "foto_masuk" => $fileName,
-                "lokasi_masuk" => $lokasi,
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now(),
-            ];
-            $store = DB::table('presensi')->insert($data);
-        } elseif ($jenisPresensi == "keluar") {
-            $data = [
+        if ($cek_presensi_hari_ini) {
+            $data_pulang = [
                 "jam_keluar" => $jam,
                 "foto_keluar" => $fileName,
                 "lokasi_keluar" => $lokasi,
                 "updated_at" => Carbon::now(),
             ];
             $store = DB::table('presensi')
-                ->where('user_id', auth()->guard('karyawan')->user()->user_id)
-                ->where('tanggal_presensi', date('Y-m-d'))
-                ->update($data);
-        }
+                ->where('user_id', $user_id)
+                ->where('tanggal_presensi', $tglPresensi)
+                ->update($data_pulang);
 
-        if ($store) {
-            Storage::put($file, $imageBase64);
-        } else {
+            if ($store) {
+                Storage::put($file, $imageBase64);
+            }
+
             return response()->json([
-                'status' => 500,
-                'success' => false,
-                'message' => "Gagal presensi",
+                'status' => 200, // Selalu sukses
+                'success' => true,
+                'message' => 'Hati-hati di jalan!',
+                'jenis_presensi' => 'keluar'
             ]);
-        }
 
-        return response()->json([
-            'status' => 200,
-            'data' => $data,
-            'success' => true,
-            'message' => "Berhasil presensi",
-            'jenis_presensi' => $jenisPresensi,
-        ]);
+        } else {
+            $data_masuk = [
+                "user_id" => $user_id,
+                "tanggal_presensi" => $tglPresensi,
+                "jam_masuk" => $jam,
+                "foto_masuk" => $fileName,
+                'lokasi_masuk' => $statusLokasi, // <-- Menyimpan status lokasi
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now(),
+            ];
+            $store = DB::table('presensi')->insert($data_masuk);
+
+            if ($store) {
+                Storage::put($file, $imageBase64);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'success' => false,
+                    'message' => "Gagal menyimpan presensi, silakan coba lagi.",
+                ]);
+            }
+
+            if ($statusLokasi == 'in') {
+                return response()->json([
+                    'status' => 200,
+                    'success' => true,
+                    'message' => 'Terima kasih, selamat bekerja!',
+                    'jenis_presensi' => 'masuk'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 201, // 201 untuk "Berhasil dengan catatan"
+                    'success' => true,
+                    'message' => 'Berhasil! Anda terdeteksi di luar radius kantor.',
+                    'jenis_presensi' => 'masuk_diluar_radius' // Jenis baru untuk notif audio
+                ]);
+            }
+        }
     }
 
     public function validation_radius_presensi($langtitudeKantor, $longtitudeKantor, $langtitudeUser, $longtitudeUser)
