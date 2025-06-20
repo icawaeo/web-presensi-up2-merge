@@ -204,7 +204,7 @@ class PresensiController extends Controller
                 'tanggal_pengajuan' => $tanggal_pengajuan,
                 'status' => $status,
                 'keterangan' => $keterangan,
-                'status_approved' => 1,
+                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::PENDING->value,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
@@ -366,7 +366,7 @@ class PresensiController extends Controller
     {
         if ($request->ajuan == "terima") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => 2
+                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::DISETUJUI->value
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah diterima']);
@@ -376,7 +376,7 @@ class PresensiController extends Controller
 
         } elseif ($request->ajuan == "tolak") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => 3
+                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::DITOLAK->value
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah ditolak']);
@@ -386,7 +386,7 @@ class PresensiController extends Controller
 
         } elseif ($request->ajuan == "batal") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => 1
+                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::PENDING->value
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah dibatalkan']);

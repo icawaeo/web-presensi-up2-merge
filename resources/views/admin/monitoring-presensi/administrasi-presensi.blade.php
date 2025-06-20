@@ -62,9 +62,9 @@
                         </div>
                         <select name="status_approved" class="select select-bordered">
                             <option value="0">Semua Aksi</option>
-                            <option value="1" {{ request()->status_approved == 1 ? "selected" : "" }}>Pending</option>
-                            <option value="2" {{ request()->status_approved == 2 ? "selected" : "" }}>Diterima</option>
-                            <option value="3" {{ request()->status_approved == 3 ? "selected" : "" }}>Ditolak</option>
+                            <option value="">Semua Aksi</option> <option value="0" {{ request()->status_approved == '0' ? "selected" : "" }}>Pending</option>
+                            <option value="1" {{ request()->status_approved == '1' ? "selected" : "" }}>Diterima</option>
+                            <option value="2" {{ request()->status_approved == '2' ? "selected" : "" }}>Ditolak</option>
                         </select>
                     </label>
                     <button type="submit" class="btn btn-success w-full md:w-14">
@@ -102,22 +102,19 @@
                             </td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->keterangan }}</td>
                             <td class="flex justify-center gap-2">
-                                @if ($item->status_approved == 1)
-                                    <label class="btn btn-warning btn-sm tooltip flex items-center" data-tip="Diterima" onclick="return terima_button('{{ $item->id }}', '{{ $item->nama_karyawan }}', '{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}', 'terima')">
+                                @if ($item->status_approved == 0) <label class="btn btn-warning btn-sm tooltip flex items-center" data-tip="Diterima" onclick="return terima_button('{{ $item->id }}', '{{ $item->nama_karyawan }}', '{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}', 'terima')">
                                         <i class="ri-checkbox-circle-line"></i>
                                     </label>
                                     <label class="btn btn-error btn-sm tooltip flex items-center" data-tip="Ditolak" onclick="return tolak_button('{{ $item->id }}', '{{ $item->nama_karyawan }}', '{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}', 'tolak')">
                                         <i class="ri-close-circle-line"></i>
                                     </label>
-                                @elseif ($item->status_approved == 2)
-                                    <div class="flex items-center gap-2">
+                                @elseif ($item->status_approved == 1) <div class="flex items-center gap-2">
                                         <div class="badge badge-success">Diterima</div>
                                         <label class="btn btn-error btn-sm tooltip flex items-center" data-tip="Dibatalkan" onclick="return batal_button('{{ $item->id }}', '{{ $item->nama_karyawan }}', '{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}', 'batal')">
                                             <i class="ri-close-circle-line"></i>
                                         </label>
                                     </div>
-                                @elseif ($item->status_approved == 3)
-                                    <div class="flex items-center gap-2">
+                                @elseif ($item->status_approved == 2) <div class="flex items-center gap-2">
                                         <div class="badge badge-error">Ditolak</div>
                                         <label class="btn btn-error btn-sm tooltip flex items-center" data-tip="Dibatalkan" onclick="return batal_button('{{ $item->id }}', '{{ $item->nama_karyawan }}', '{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}', 'batal')">
                                             <i class="ri-close-circle-line"></i>
