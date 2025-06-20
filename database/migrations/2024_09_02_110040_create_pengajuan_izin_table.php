@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuan_presensi', function (Blueprint $table) {
+        // Saya ganti nama tabelnya menjadi 'pengajuan_izin' agar lebih jelas
+        Schema::create('pengajuan_izin', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
-            $table->date('tanggal_pengajuan');
-            $table->char('status', 1);
+            $table->string('nik'); // Menggunakan NIK agar konsisten
+            $table->date('tanggal_izin');
+            $table->char('status', 1); // 'i' untuk izin, 's' untuk sakit
             $table->text('keterangan')->nullable();
-            $table->char('status_approved', 1)->default(1);
-            $table->foreign('user_id')->references('user_id')->on('karyawan');
+            // Default '0' artinya PENDING
+            $table->char('status_approved', 1)->default('0'); 
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengajuan_presensi');
+        Schema::dropIfExists('pengajuan_izin');
     }
 };

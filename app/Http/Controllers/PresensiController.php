@@ -191,7 +191,8 @@ class PresensiController extends Controller
             ->whereDate('tanggal_pengajuan', Carbon::make($tanggal_pengajuan)->format('Y-m-d'))
             ->where(function (Builder $query) {
                 $query->where('status_approved', 0)
-                    ->orWhere('status_approved', 1);
+                    ->orWhere('status_approved', 1)
+                    ->orWhere('status_approved', 2);
             })
             ->first();
 
@@ -203,13 +204,14 @@ class PresensiController extends Controller
                 'tanggal_pengajuan' => $tanggal_pengajuan,
                 'status' => $status,
                 'keterangan' => $keterangan,
+                'status_approved' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
         }
 
         if ($store) {
-            return to_route('karyawan.izin')->with("success", "Berhasil menambahkan pengajuan");
+            return to_route('karyawan.izin')->with("success", "Pengajuan berhasil dibuat dan menunggu persetujuan.");
 
         } else {
             return to_route('karyawan.izin')->with("error", "Gagal menambahkan pengajuan");
