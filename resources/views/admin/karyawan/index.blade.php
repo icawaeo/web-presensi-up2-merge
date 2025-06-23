@@ -50,7 +50,7 @@
                                         @if ($item->foto)
                                             <img src="{{ asset("storage/unggah/karyawan/$item->foto") }}" />
                                         @else
-                                            <img src="{{ asset("img/team-2.jpg") }}" />
+                                            <img src="{{ asset("img/default-user-icon.png") }}" />
                                         @endif
                                     </div>
                                 </div>

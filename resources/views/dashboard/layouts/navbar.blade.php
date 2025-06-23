@@ -167,7 +167,7 @@
                             <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 dark:hover:bg-slate-900 lg:transition-colors" href="javascript:;">
                                 <div class="flex py-1">
                                     <div class="my-auto">
-                                        <img src="{{ asset("img/team-2.jpg") }}" class="mr-4 inline-flex h-9 w-9 max-w-none items-center justify-center rounded-xl text-sm text-white" />
+                                        <img src="{{ asset("img/default-user-icon.png") }}" class="mr-4 inline-flex h-9 w-9 max-w-none items-center justify-center rounded-xl text-sm text-white" />
                                     </div>
                                     <div class="flex flex-col justify-center">
                                         <h6 class="mb-1 text-sm font-normal leading-normal dark:text-white"><span class="font-semibold">New message</span> from Laur</h6>

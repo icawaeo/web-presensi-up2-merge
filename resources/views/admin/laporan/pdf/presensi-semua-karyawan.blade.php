@@ -93,7 +93,7 @@
         <table style="width: 100%">
             <tr>
                 <td style="width: 30px;">
-                    <img src="{{ public_path('img/team-2.jpg') }}" alt="logo" width="100" height="100" style="border-radius: 21px" />
+                    <img src="{{ public_path('iimg/default-user-icon.png') }}" alt="logo" width="100" height="100" style="border-radius: 21px" />
                 </td>
                 <td>
                     <span class="title" style="margin-left: 0.5rem;">
