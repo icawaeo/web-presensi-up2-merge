@@ -65,7 +65,7 @@
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->telepon }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->email }}</td>
                             <td>
-                                <label class="btn btn-warning btn-sm" for="edit_button" onclick="return edit_button('{{ $item->user_id }}')">
+                                <label class="btn btn-warning btn-sm" for="edit_button" onclick="return edit_button('{{ $item->user_id }}', '{{ $item->nama_lengkap }}')">
                                     <i class="ri-pencil-fill"></i>
                                 </label>
                                 <label class="btn btn-error btn-sm" onclick="return delete_button('{{ $item->user_id }}', '{{ $item->nama_lengkap }}')">
@@ -224,7 +224,7 @@
     <div class="modal" role="dialog">
         <div class="modal-box">
             <div class="mb-3 flex justify-between">
-                <h3 class="text-lg font-bold">Ubah {{ $title }}</h3>
+                <h3 class="text-lg font-bold" id="judul_modal_edit">Ubah Data TAD</h3>
                 <label for="edit_button" class="cursor-pointer">
                     <i class="ri-close-large-fill"></i>
                 </label>
@@ -379,9 +379,10 @@
             });
         @endif
 
-        function edit_button(user_id) {
+        function edit_button(user_id, nama_lengkap) {
             $('#edit_form')[0].reset();
             $(".foto-edit-preview").attr("src", "").hide();
+            $('#judul_modal_edit').text('Ubah Data: ' + nama_lengkap);
             
             $.ajax({
                 type: "get",
