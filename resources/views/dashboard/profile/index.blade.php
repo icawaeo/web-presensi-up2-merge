@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="flex-auto p-6">
-                        <p class="text-sm uppercase leading-normal dark:text-white dark:opacity-60">User Information</p>
+                        <p class="text-sm uppercase leading-normal dark:text-white dark:opacity-60">Identitas Anda</p>
                         <div class="-mx-3 flex flex-wrap">
                             {{-- <div class="md:flex-0 w-full max-w-full shrink-0 px-3 md:w-6/12">
                                 <div class="mb-4">
