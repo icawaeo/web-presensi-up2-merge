@@ -270,7 +270,7 @@
                                                 <div class="flex items-center px-2 py-1">
                                                     <div>
                                                         <h1 class="mb-0 font-bold leading-normal text-slate-500 dark:text-slate-300">{{ $item->nama_lengkap }}</h1>
-                                                        <p class="mb-0 text-xs leading-tight text-slate-500 dark:text-slate-300">{{ $item->jabatan }}</p>
+                                                        {{-- <p class="mb-0 text-xs leading-tight text-slate-500 dark:text-slate-300">{{ $item->jabatan }}</p> --}}
                                                     </div>
                                                 </div>
                                             </td>
