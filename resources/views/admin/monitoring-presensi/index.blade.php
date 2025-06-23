@@ -44,9 +44,12 @@
                             <td class="text-slate-500 dark:text-slate-300">
                                 <div class="avatar">
                                     <div class="w-24 rounded">
-                                        <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_masuk', '{{ $item->user_id }}')">
-                                            <img src="{{ asset("storage/unggah/presensi/$item->foto_masuk") }}" alt="{{ $item->foto_masuk }}" />
-                                        </label>
+                                        {{-- REVISI: Kirim koordinat yang benar langsung ke fungsi JS --}}
+                                        @if ($item->foto_masuk && $item->lokasi_masuk)
+                                            <label for="view_modal" class="cursor-pointer" onclick="return showMapModal('{{ $item->lokasi_masuk }}')">
+                                                <img src="{{ asset("storage/unggah/presensi/$item->foto_masuk") }}" alt="{{ $item->foto_masuk }}" />
+                                            </label>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
@@ -60,8 +63,9 @@
                             <td class="text-slate-500 dark:text-slate-300">
                                 <div class="avatar">
                                     <div class="w-24 rounded">
-                                        @if ($item->foto_keluar)
-                                            <label for="view_modal" class="cursor-pointer" onclick="return viewLokasi('lokasi_keluar', '{{ $item->user_id }}')">
+                                        {{-- REVISI: Kirim koordinat yang benar langsung ke fungsi JS --}}
+                                        @if ($item->foto_keluar && $item->lokasi_keluar)
+                                            <label for="view_modal" class="cursor-pointer" onclick="return showMapModal('{{ $item->lokasi_keluar }}')">
                                                 <img src="{{ asset("storage/unggah/presensi/$item->foto_keluar") }}" alt="{{ $item->foto_keluar }}" />
                                             </label>
                                         @else
@@ -102,7 +106,7 @@
     <div class="modal" role="dialog">
         <div class="modal-box">
             <div class="mb-3 flex justify-between">
-                <h3 class="judul-lokasi text-lg font-bold"></h3>
+                <h3 class="judul-lokasi text-lg font-bold">Lokasi Presensi</h3>
                 <label for="view_modal" class="cursor-pointer">
                     <i class="ri-close-large-fill"></i>
                 </label>
@@ -112,10 +116,10 @@
                     <div class="label">
                         <span class="label-text font-semibold">
                             <span class="label-text font-semibold">Koordinat</span>
-                            <span class="label-text-alt" id="loading_edit1"></span>
                         </span>
                     </div>
-                    <input type="text" name="lokasi" placeholder="Lokasi" class="input input-bordered w-full text-blue-700" readonly />
+                    {{-- Input ini akan diisi oleh JavaScript --}}
+                    <input type="text" name="lokasi_modal" placeholder="Lokasi" class="input input-bordered w-full text-blue-700" readonly />
                     <div id="lokasi-map" class="mx-auto mt-3 h-80 w-full rounded-md"></div>
                 </label>
             </div>
@@ -123,6 +127,7 @@
     </div>
     {{-- Akhir Modal View Lokasi --}}
 
+    {{-- REVISI KESELURUHAN BAGIAN SCRIPT --}}
     <script>
         @if (session()->has("success"))
             Swal.fire({
@@ -143,56 +148,56 @@
                 confirmButtonText: 'OK',
             });
         @endif
+        
+        // Variabel global untuk menyimpan instance peta
+        let mapInstance = null;
+        let markerInstance = null;
 
-        function maps(latitude, longitude) {
-            let map = L.map('lokasi-map').setView([latitude, longitude], 17);
+        /**
+         * Fungsi baru untuk menampilkan modal dan peta.
+         * Menggantikan fungsi lama `viewLokasi` dan `maps`.
+         * @param {string} lokasi - Koordinat dalam format "latitude,longitude".
+         */
+        function showMapModal(lokasi) {
+            // Jika lokasi kosong atau tidak valid, jangan lakukan apa-apa
+            if (!lokasi) {
+                console.error("Koordinat lokasi tidak valid.");
+                return;
+            }
+
+            // Memasukkan nilai koordinat ke dalam input field di modal
+            document.querySelector("input[name='lokasi_modal']").value = lokasi;
+            
+            const [latitude, longitude] = lokasi.split(",");
+
+            // Hancurkan map lama jika ada, untuk menghindari error "Map container already initialized"
+            if (mapInstance) {
+                mapInstance.remove();
+                mapInstance = null;
+            }
+
+            // Buat instance map baru
+            mapInstance = L.map('lokasi-map').setView([latitude, longitude], 18);
+            
+            // Tambahkan tile layer OpenStreetMap
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
+            }).addTo(mapInstance);
 
-            let marker = L.marker([latitude, longitude]).addTo(map);
-            marker.bindPopup("<b>Anda berada di sini</b>").openPopup();
-
-            let circle = L.circle([{{ $lokasiKantor->latitude }}, {{ $lokasiKantor->longitude }}], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: {{ $lokasiKantor->radius }}
-            }).addTo(map);
-        }
-
-        function viewLokasi(tipe, user_id) {
-            // Loading effect start
-            let loading = `<span class="loading loading-dots loading-md text-purple-600"></span>`;
-            $("#loading_edit1").html(loading);
-
-            $.ajax({
-                type: "post",
-                url: "{{ route("admin.monitoring-presensi.lokasi") }}",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "tipe": tipe,
-                    "user_id": user_id,
-                },
-                success: function(data) {
-                    // console.log(data);
-                    let items = [];
-                    $.each(data, function(key, val) {
-                        items.push(val);
-                    });
-
-                    $(".judul-lokasi").html(tipe);
-                    $("input[name='lokasi']").val(items[0]);
-
-                    // Loading effect end
-                    loading = "";
-                    $("#loading_edit1").html(loading);
-
-                    let lokasi = items[0].split(",");
-                    maps(lokasi[0], lokasi[1]);
-                }
-            });
+            // Tambahkan marker di lokasi presensi
+            markerInstance = L.marker([latitude, longitude]).addTo(mapInstance);
+            markerInstance.bindPopup("<b>Lokasi Presensi</b>").openPopup();
+            
+            // Tambahkan lingkaran radius kantor untuk referensi
+            @if($lokasiKantor)
+                L.circle([{{ $lokasiKantor->latitude }}, {{ $lokasiKantor->longitude }}], {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5,
+                    radius: {{ $lokasiKantor->radius }}
+                }).addTo(mapInstance).bindPopup("<b>Lokasi Kantor</b>");
+            @endif
         }
     </script>
 </x-app-layout>

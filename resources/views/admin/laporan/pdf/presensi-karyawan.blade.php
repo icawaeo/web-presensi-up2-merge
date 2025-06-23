@@ -93,7 +93,7 @@
         <table style="width: 100%">
             <tr>
                 <td style="width: 30px;">
-                    <img src="{{ public_path('img/logo-pln.png') }}" alt="logo" width="auto" height="100" style="border-radius: 21px" />
+                    <img src="{{ public_path('img/team-2.jpg') }}" alt="logo" width="100" height="100" style="border-radius: 21px" />
                 </td>
                 <td>
                     <span class="title" style="margin-left: 0.5rem;">
@@ -106,7 +106,7 @@
                         PT PLN (Persero) UPP Sulawesi Utara<br>
                     </span>
                     <span style="margin-left: 0.5rem;">
-                        <i>Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara</i>
+                        <i>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium, vero.</i>
                     </span>
                 </td>
             </tr>
@@ -118,7 +118,7 @@
                     @if ($karyawan->foto)
                         <img src="{{ public_path("storage/unggah/karyawan/$karyawan->foto") }}" alt="foto-karyawan" width="100" height="150" style="border-radius: 0.5rem" />
                     @else
-                        <img src="{{ public_path("img/default-user-icon.png") }}" alt="foto-karyawan" width="100" height="150" style="border-radius: 0.5rem" />
+                        <img src="{{ public_path("img/team-2.jpg") }}" alt="foto-karyawan" width="100" height="150" style="border-radius: 0.5rem" />
                     @endif
                 </td>
             </tr>
@@ -134,6 +134,11 @@
             </tr>
             <tr>
                 <td>Pekerjaan</td>
+                <td>:</td>
+                <td>{{ $karyawan->jabatan }}</td>
+            </tr>
+            <tr>
+                <td>Departemen</td>
                 <td>:</td>
                 <td>{{ $karyawan->departemen->nama }}</td>
             </tr>

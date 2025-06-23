@@ -26,6 +26,27 @@ class PresensiController extends Controller
         return view('dashboard.presensi.index', compact('title', 'presensiKaryawan', 'lokasiKantor'));
     }
 
+    public function create()
+    {
+        $hariIni = Carbon::now();
+        $lokasiKantor = LokasiKantor::where('is_used', true)->first();
+
+        // Validasi jika admin belum mengatur lokasi kantor
+        if (!$lokasiKantor) {
+            return redirect()->route('karyawan.dashboard')->with('error', 'Lokasi kantor belum diatur. Silakan hubungi admin.');
+        }
+
+        $presensiKaryawan = DB::table('presensi')
+            ->where('user_id', auth()->guard('karyawan')->user()->user_id)
+            ->where('tanggal_presensi', $hariIni->toDateString())
+            ->first();
+
+        return view('dashboard.presensi.create', [
+            'title' => "Presensi",
+            'presensiKaryawan' => $presensiKaryawan,
+            'lokasiKantor' => $lokasiKantor,
+        ]);
+    } 
     public function store(Request $request)
     {
         $jenisPresensi = $request->jenis;
@@ -34,23 +55,15 @@ class PresensiController extends Controller
         $jam = date('H:i:s');
         $lokasi = $request->lokasi;
 
-        // --- LOGIKA VALIDASI RADIUS YANG BARU ---
+        // Logika pengecekan radius untuk menandai status
         $lokasiKantor = LokasiKantor::where('is_used', true)->first();
         $lokasiUser = explode(",", $lokasi);
         $langtitudeUser = $lokasiUser[0];
         $longtitudeUser = $lokasiUser[1];
 
-        // Hitung jarak
         $jarak = round($this->validation_radius_presensi($lokasiKantor->latitude, $lokasiKantor->longitude, $langtitudeUser, $longtitudeUser), 2);
-
-        // Tentukan status lokasi berdasarkan jarak, tidak lagi menggagalkan presensi
-        $statusLokasi = ($jarak > $lokasiKantor->radius) ? 'out' : 'in';
-        // --- AKHIR LOGIKA VALIDASI ---
-
-        $cek_presensi_hari_ini = DB::table('presensi')
-            ->where('user_id', $user_id)
-            ->where('tanggal_presensi', $tglPresensi)
-            ->first();
+        
+        $statusRadius = ($jarak > $lokasiKantor->radius) ? 'out' : 'in';
 
         $folderPath = "public/unggah/presensi/";
         $folderName = $user_id . "-" . $tglPresensi . "-" . $jenisPresensi;
@@ -60,67 +73,48 @@ class PresensiController extends Controller
         $fileName = $folderName . ".png";
         $file = $folderPath . $fileName;
 
-        if ($cek_presensi_hari_ini) {
-            $data_pulang = [
+        if ($jenisPresensi == "masuk") {
+            $data = [
+                "user_id" => $user_id,
+                "tanggal_presensi" => $tglPresensi,
+                "jam_masuk" => $jam,
+                "foto_masuk" => $fileName,
+                "lokasi_masuk" => $lokasi,
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now(),
+            ];
+            $store = DB::table('presensi')->insert($data);
+        } elseif ($jenisPresensi == "keluar") {
+            $data = [
                 "jam_keluar" => $jam,
                 "foto_keluar" => $fileName,
                 "lokasi_keluar" => $lokasi,
                 "updated_at" => Carbon::now(),
             ];
             $store = DB::table('presensi')
-                ->where('user_id', $user_id)
-                ->where('tanggal_presensi', $tglPresensi)
-                ->update($data_pulang);
-
-            if ($store) {
-                Storage::put($file, $imageBase64);
-            }
-
-            return response()->json([
-                'status' => 200, // Selalu sukses
-                'success' => true,
-                'message' => 'Hati-hati di jalan!',
-                'jenis_presensi' => 'keluar'
-            ]);
-
-        } else {
-            $data_masuk = [
-                "user_id" => $user_id,
-                "tanggal_presensi" => $tglPresensi,
-                "jam_masuk" => $jam,
-                "foto_masuk" => $fileName,
-                'lokasi_masuk' => $statusLokasi, // <-- Menyimpan status lokasi
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now(),
-            ];
-            $store = DB::table('presensi')->insert($data_masuk);
-
-            if ($store) {
-                Storage::put($file, $imageBase64);
-            } else {
-                return response()->json([
-                    'status' => 500,
-                    'success' => false,
-                    'message' => "Gagal menyimpan presensi, silakan coba lagi.",
-                ]);
-            }
-
-            if ($statusLokasi == 'in') {
-                return response()->json([
-                    'status' => 200,
-                    'success' => true,
-                    'message' => 'Terima kasih, selamat bekerja!',
-                    'jenis_presensi' => 'masuk'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 201, // 201 untuk "Berhasil dengan catatan"
-                    'success' => true,
-                    'message' => 'Berhasil! Anda terdeteksi di luar radius kantor.',
-                    'jenis_presensi' => 'masuk_diluar_radius' // Jenis baru untuk notif audio
-                ]);
-            }
+                ->where('user_id', auth()->guard('karyawan')->user()->user_id)
+                ->where('tanggal_presensi', date('Y-m-d'))
+                ->update($data);
         }
+
+        if ($store) {
+            Storage::put($file, $imageBase64);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'success' => false,
+                'message' => "Gagal presensi",
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $data,
+            'success' => true,
+            'message' => "Berhasil presensi",
+            'jenis_presensi' => $jenisPresensi,
+            'status_radius' => $statusRadius, // Kirim status radius ke frontend
+        ]);
     }
 
     public function validation_radius_presensi($langtitudeKantor, $longtitudeKantor, $langtitudeUser, $longtitudeUser)
@@ -191,8 +185,7 @@ class PresensiController extends Controller
             ->whereDate('tanggal_pengajuan', Carbon::make($tanggal_pengajuan)->format('Y-m-d'))
             ->where(function (Builder $query) {
                 $query->where('status_approved', 0)
-                    ->orWhere('status_approved', 1)
-                    ->orWhere('status_approved', 2);
+                    ->orWhere('status_approved', 1);
             })
             ->first();
 
@@ -204,14 +197,13 @@ class PresensiController extends Controller
                 'tanggal_pengajuan' => $tanggal_pengajuan,
                 'status' => $status,
                 'keterangan' => $keterangan,
-                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::PENDING->value,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
         }
 
         if ($store) {
-            return to_route('karyawan.izin')->with("success", "Pengajuan berhasil dibuat dan menunggu persetujuan.");
+            return to_route('karyawan.izin')->with("success", "Berhasil menambahkan pengajuan");
 
         } else {
             return to_route('karyawan.izin')->with("error", "Gagal menambahkan pengajuan");
@@ -256,12 +248,18 @@ class PresensiController extends Controller
     public function viewLokasi(Request $request)
     {
         if ($request->tipe == "lokasi_masuk") {
-            $data = DB::table('presensi')->where('user_id', $request->user_id)->first('lokasi_masuk');
-            return $data;
-        } elseif ($request->tipe == "lokasi_keluar") {
-            $data = DB::table('presensi')->where('user_id', $request->user_id)->first('lokasi_keluar');
-            return $data;
+            $lokasi = DB::table('presensi')
+                ->where('user_id', $request->user_id)
+                ->where('tanggal_presensi', 'LIKE', '%' . Carbon::now()->format('Y-m') . '%')
+                ->pluck('lokasi_masuk');
+        } else {
+            $lokasi = DB::table('presensi')
+                ->where('user_id', $request->user_id)
+                ->where('tanggal_presensi', 'LIKE', '%' . Carbon::now()->format('Y-m') . '%')
+                ->pluck('lokasi_keluar');
         }
+
+        return response()->json($lokasi);
     }
 
     public function laporan(Request $request)
@@ -273,7 +271,7 @@ class PresensiController extends Controller
 
     public function laporanPresensiKaryawan(Request $request)
     {
-        $title = 'Laporan Presensi Tenaga Ahli Daya';
+        $title = 'Laporan Presensi Karyawan';
         $bulan = $request->bulan;
         $karyawan = Karyawan::query()
             ->with('departemen')
@@ -293,7 +291,7 @@ class PresensiController extends Controller
 
     public function laporanPresensiSemuaKaryawan(Request $request)
     {
-        $title = 'Laporan Presensi Tenaga Ahli Daya';
+        $title = 'Laporan Presensi Semua Karyawan';
         $bulan = $request->bulan;
         $riwayatPresensi = DB::table("presensi as p")
             ->join('karyawan as k', 'p.user_id', '=', 'k.user_id')
@@ -313,7 +311,7 @@ class PresensiController extends Controller
                 'k.jabatan',
                 'd.nama'
             )
-            ->orderBy("k.nama_lengkap", "asc")
+            ->orderBy("tanggal_presensi", "asc")
             ->get();
 
         // return view('admin.laporan.pdf.presensi-semua-karyawan', compact('title', 'bulan', 'riwayatPresensi'));
@@ -366,7 +364,7 @@ class PresensiController extends Controller
     {
         if ($request->ajuan == "terima") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::DISETUJUI->value
+                'status_approved' => 2
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah diterima']);
@@ -376,7 +374,7 @@ class PresensiController extends Controller
 
         } elseif ($request->ajuan == "tolak") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::DITOLAK->value
+                'status_approved' => 3
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah ditolak']);
@@ -386,7 +384,7 @@ class PresensiController extends Controller
 
         } elseif ($request->ajuan == "batal") {
             $pengajuan = DB::table('pengajuan_presensi')->where('id', $request->id)->update([
-                'status_approved' => \App\Enums\StatusPengajuanPresensiApproved::PENDING->value
+                'status_approved' => 1
             ]);
             if ($pengajuan) {
                 return response()->json(['success' => true, 'message' => 'Pengajuan presensi telah dibatalkan']);
