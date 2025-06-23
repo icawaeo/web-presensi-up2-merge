@@ -12,7 +12,7 @@
                     <i class="ri-team-line text-5xl md:text-3xl lg:text-5xl"></i>
                     <div class="card-body">
                         <h2 class="card-title md:text-base">{{ $totalKaryawan }}</h2>
-                        <p class="text-lg md:text-sm">Total Karyawan</p>
+                        <p class="text-lg md:text-sm">Total TAD</p>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                     <i class="ri-fingerprint-fill text-5xl md:text-3xl lg:text-5xl"></i>
                     <div class="card-body">
                         <h2 class="card-title md:text-base">{{ $rekapPresensi->jml_kehadiran }}</h2>
-                        <p class="text-lg md:text-sm">Karyawan Hadir</p>
+                        <p class="text-lg md:text-sm">TAD Hadir</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <i class="ri-hospital-line text-5xl md:text-3xl lg:text-5xl"></i>
                     <div class="card-body">
                         <h2 class="card-title md:text-base">{{ $rekapPengajuanPresensi->jml_sakit }}</h2>
-                        <p class="text-lg md:text-sm">Karyawan Sakit</p>
+                        <p class="text-lg md:text-sm">TAD Sakit</p>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <i class="ri-hospital-line text-5xl md:text-3xl lg:text-5xl"></i>
                     <div class="card-body">
                         <h2 class="card-title md:text-base">{{ $rekapPengajuanPresensi->jml_izin }}</h2>
-                        <p class="text-lg md:text-sm">Karyawan Izin</p>
+                        <p class="text-lg md:text-sm">TAD Izin</p>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <i class="ri-time-line text-5xl md:text-3xl lg:text-5xl"></i>
                     <div class="card-body">
                         <h2 class="card-title md:text-base">{{ $rekapPresensi->jml_terlambat }}</h2>
-                        <p class="text-lg md:text-sm">Karyawan Terlambat</p>
+                        <p class="text-lg md:text-sm">TAD Terlambat</p>
                     </div>
                 </div>
             </div>

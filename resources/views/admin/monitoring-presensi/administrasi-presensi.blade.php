@@ -19,16 +19,16 @@
                     </label> --}}
                     <label class="form-control w-full max-w-xs">
                         <div class="label">
-                            <span class="label-text">Nama Karyawan</span>
+                            <span class="label-text">Nama Tenaga Ahli Daya</span>
                         </div>
-                        <input type="text" name="karyawan" placeholder="Nama Karyawan" class="input input-bordered w-full" value="{{ request()->karyawan }}" />
+                        <input type="text" name="karyawan" placeholder="Nama Tenaga Ahli Daya" class="input input-bordered w-full" value="{{ request()->karyawan }}" />
                     </label>
                     <label class="form-control w-full max-w-xs">
                         <div class="label">
-                            <span class="label-text">Departemen</span>
+                            <span class="label-text">Pekerjaan</span>
                         </div>
                         <select name="departemen" class="select select-bordered">
-                            <option value="0">Semua Departemen</option>
+                            <option value="0">Semua Pekerjaan</option>
                             @foreach ($departemen as $item)
                                 <option value="{{ $item->id }}" {{ request()->departemen == $item->id ? "selected" : "" }}>{{ $item->nama }}</option>
                             @endforeach
@@ -78,7 +78,7 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        <th>Nama Karyawan</th>
+                        <th>Nama Tenaga Ahli Daya</th>
                         <th>Pekerjaan</th>
                         <th>Tanggal Pengajuan</th>
                         <th>Status</th>
@@ -90,7 +90,7 @@
                     @foreach ($pengajuan as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $value + 1 }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }} - {{ $item->user_id }}</td>
+                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_departemen }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format("l, d-m-Y") }}</td>
                             <td class="text-slate-500 dark:text-slate-300">

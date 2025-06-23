@@ -23,7 +23,7 @@
                 <thead class="text-sm text-gray-800 dark:text-gray-300">
                     <tr>
                         <th></th>
-                        <th>Nama Lengkap</th>
+                        <th>Nama Tenaga Ahli Daya</th>
                         <th>Pekerjaan</th>
                         <th>Email</th>
                         <th>Jam Masuk</th>

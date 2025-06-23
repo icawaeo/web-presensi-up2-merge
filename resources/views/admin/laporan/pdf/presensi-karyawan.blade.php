@@ -92,25 +92,26 @@
     <section class="sheet padding-10mm">
         <table style="width: 100%">
             <tr>
-                <td style="width: 30px;">
-                    <img src="{{ public_path('img/team-2.jpg') }}" alt="logo" width="100" height="100" style="border-radius: 21px" />
-                </td>
-                <td>
-                    <span class="title" style="margin-left: 0.5rem;">
-                        {{ strtoupper($title) }} <br>
-                    </span>
-                    <span class="title" style="margin-left: 0.5rem;">
-                        PERIODE {{ strtoupper(\Carbon\Carbon::make($bulan)->format("F")) }} TAHUN {{ \Carbon\Carbon::make($bulan)->format("Y") }} <br>
-                    </span>
-                    <span class="title" style="margin-left: 0.5rem;">
-                        PT PLN (Persero) UPP Sulawesi Utara<br>
-                    </span>
-                    <span style="margin-left: 0.5rem;">
-                        <i>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium, vero.</i>
-                    </span>
-                </td>
+            <td style="width: 30px;">
+                <img src="{{ public_path('img/logo-pln.png') }}" alt="logo" width="auto" height="100" style="border-radius: 21px" />
+            </td>
+            <td>
+                <span class="title" style="margin-left: 0.5rem;">
+                {{ strtoupper($title) }} <br>
+                </span>
+                <span class="title" style="margin-left: 0.5rem;">
+                PERIODE {{ strtoupper(\Carbon\Carbon::make($bulan)->format("F")) }} TAHUN {{ \Carbon\Carbon::make($bulan)->format("Y") }} <br>
+                </span>
+                <span class="title" style="margin-left: 0.5rem;">
+                PT PLN (Persero) Unit Pelaksana Proyek Sulawesi Utara<br>
+                </span>
+                <span style="margin-left: 0.5rem;">
+                <i>Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara</i>
+                </span>
+            </td>
             </tr>
         </table>
+        <hr style="border: 1px solid black; margin-top: 0.5rem; margin-bottom: 1.5rem;">
 
         <table class="identitas-karyawan">
             <tr>
@@ -118,7 +119,7 @@
                     @if ($karyawan->foto)
                         <img src="{{ public_path("storage/unggah/karyawan/$karyawan->foto") }}" alt="foto-karyawan" width="100" height="150" style="border-radius: 0.5rem" />
                     @else
-                        <img src="{{ public_path("img/team-2.jpg") }}" alt="foto-karyawan" width="100" height="150" style="border-radius: 0.5rem" />
+                        <img src="{{ public_path("img/default-user-icon.png") }}" alt="foto-karyawan" width="auto" height="100" style="border-radius: 0.5rem" />
                     @endif
                 </td>
             </tr>
@@ -128,24 +129,24 @@
                 <td>{{ $karyawan->user_id }}</td>
             </tr> --}}
             <tr>
-                <td>Nama</td>
+                <td>Nama Lengkap</td>
                 <td>:</td>
                 <td>{{ $karyawan->nama_lengkap }}</td>
             </tr>
             <tr>
                 <td>Pekerjaan</td>
                 <td>:</td>
-                <td>{{ $karyawan->jabatan }}</td>
-            </tr>
-            <tr>
-                <td>Departemen</td>
-                <td>:</td>
                 <td>{{ $karyawan->departemen->nama }}</td>
             </tr>
             <tr>
-                <td>Email / Telepon</td>
+                <td>Alamat Email</td>
                 <td>:</td>
-                <td>{{ $karyawan->email }} / {{ $karyawan->telepon }}</td>
+                <td>{{ $karyawan->email }}</td>
+            </tr>
+            <tr>
+                <td>Telepon</td>
+                <td>:</td>
+                <td>{{ $karyawan->telepon }}</td>
             </tr>
         </table>
 

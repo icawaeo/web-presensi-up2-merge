@@ -103,7 +103,7 @@
                         PERIODE {{ strtoupper(\Carbon\Carbon::make($bulan)->format("F")) }} TAHUN {{ \Carbon\Carbon::make($bulan)->format("Y") }} <br>
                     </span>
                     <span class="title" style="margin-left: 0.5rem;">
-                        PT PLN (Persero) UPP Sulawesi Utara <br>
+                        PT PLN (Persero) Unit Pelaksana Proyek Sulawesi Utara<br>
                     </span>
                     <span style="margin-left: 0.5rem;">
                         <i>Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara</i>
@@ -111,12 +111,13 @@
                 </td>
             </tr>
         </table>
+        <hr style="border: 1px solid black; margin-top: 0.5rem; margin-bottom: 1.5rem;">
 
         <table class="presensi-karyawan">
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Nama Tenaga Ahli Daya</th>
+                    <th>Nama Lengkap</th>
                     <th>Pekerjaan</th>
                     <th>Jumlah Kehadiran</th>
                     <th>Jumlah Terlambat</th>

@@ -4,7 +4,7 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __("Lokasi Kantor") }}
             </h2>
-            <label class="btn btn-primary btn-sm" for="create_modal">Tambah Data</label>
+            {{-- <label class="btn btn-primary btn-sm" for="create_modal">Tambah Data</label> --}}
         </div>
     </x-slot>
 

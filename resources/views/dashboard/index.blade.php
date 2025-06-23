@@ -57,9 +57,9 @@
                                     <h5 class="mb-2 font-bold dark:text-white">{{ $presensiHariIni != null ? date("H:i:s", strtotime($presensiHariIni->jam_masuk)) . " WITA" : "Belum Presensi" }}</h5>
                                     <p class="mb-0 dark:text-white dark:opacity-60">
                                         @if ($presensiHariIni != null)
-                                            @if (date("H:i:s", strtotime($presensiHariIni->jam_masuk)) < date_create("08:05:00")->format("H:i:s"))
+                                            @if (date("H:i:s", strtotime($presensiHariIni->jam_masuk)) < date_create("08:00:00")->format("H:i:s"))
                                                 <span class="text-sm font-bold leading-normal text-emerald-500 dark:text-emerald-300">Anda Datang Tepat Waktu</span>
-                                            @elseif (date("H:i:s", strtotime($presensiHariIni->jam_masuk)) > date_create("08:05:00")->format("H:i:s"))
+                                            @elseif (date("H:i:s", strtotime($presensiHariIni->jam_masuk)) > date_create("08:00:00")->format("H:i:s"))
                                                 <span class="text-sm font-bold leading-normal text-red-600 dark:text-red-300">Anda Datang Terlambat</span>
                                             @endif
                                         @endif

@@ -10,13 +10,13 @@
 
     <div class="container mx-auto px-5 pt-5">
         <div class="w-full rounded-md bg-slate-200 px-10 mb-10">
-            <h1 class="py-3 font-bold text-xl">Laporan Presensi Karyawan</h1>
+            <h1 class="py-3 font-bold text-xl">Laporan Presensi Tenaga Ahli Daya</h1>
             <form action="{{ route("admin.laporan.presensi.karyawan") }}" method="post" target="_blank" enctype="multipart/form-data" class="pb-3">
                 @csrf
                 <div class="flex w-full flex-wrap gap-2 lg:flex-nowrap">
                     <input type="month" name="bulan" class="input input-bordered w-full" value="{{ Carbon\Carbon::now()->format("Y-m") }}" required />
                     <select name="karyawan" class="select select-bordered w-full text-blue-700" required>
-                        <option disabled selected>Pilih karyawan</option>
+                        <option disabled selected>Pilih Tenaga Ahli Daya</option>
                         @foreach ($karyawan as $item)
                             <option value="{{ $item->user_id }}">{{ $item->nama_lengkap }}</option>
                         @endforeach
@@ -29,7 +29,7 @@
         </div>
 
         <div class="w-full rounded-md bg-slate-200 px-10">
-            <h1 class="py-3 font-bold text-xl">Laporan Presensi Semua Karyawan</h1>
+            <h1 class="py-3 font-bold text-xl">Ringkasan Presensi Bulanan Tenaga Ahli Daya</h1>
             <form action="{{ route("admin.laporan.presensi.semua-karyawan") }}" method="post" target="_blank" enctype="multipart/form-data" class="pb-3">
                 @csrf
                 <div class="flex w-full flex-wrap gap-2 lg:flex-nowrap">
