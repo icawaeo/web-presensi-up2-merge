@@ -273,7 +273,7 @@ class PresensiController extends Controller
 
     public function laporanPresensiKaryawan(Request $request)
     {
-        $title = 'Laporan Presensi Karyawan';
+        $title = 'Laporan Presensi Tenaga Ahli Daya';
         $bulan = $request->bulan;
         $karyawan = Karyawan::query()
             ->with('departemen')
@@ -293,7 +293,7 @@ class PresensiController extends Controller
 
     public function laporanPresensiSemuaKaryawan(Request $request)
     {
-        $title = 'Laporan Presensi Semua Karyawan';
+        $title = 'Laporan Presensi Tenaga Ahli Daya';
         $bulan = $request->bulan;
         $riwayatPresensi = DB::table("presensi as p")
             ->join('karyawan as k', 'p.user_id', '=', 'k.user_id')
@@ -313,7 +313,7 @@ class PresensiController extends Controller
                 'k.jabatan',
                 'd.nama'
             )
-            ->orderBy("tanggal_presensi", "asc")
+            ->orderBy("k.nama_lengkap", "asc")
             ->get();
 
         // return view('admin.laporan.pdf.presensi-semua-karyawan', compact('title', 'bulan', 'riwayatPresensi'));

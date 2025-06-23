@@ -93,7 +93,7 @@
         <table style="width: 100%">
             <tr>
                 <td style="width: 30px;">
-                    <img src="{{ public_path('iimg/default-user-icon.png') }}" alt="logo" width="100" height="100" style="border-radius: 21px" />
+                    <img src="{{ public_path('img/logo-pln.png') }}" alt="logo" width="auto" height="100" style="border-radius: 21px" />
                 </td>
                 <td>
                     <span class="title" style="margin-left: 0.5rem;">
@@ -103,10 +103,10 @@
                         PERIODE {{ strtoupper(\Carbon\Carbon::make($bulan)->format("F")) }} TAHUN {{ \Carbon\Carbon::make($bulan)->format("Y") }} <br>
                     </span>
                     <span class="title" style="margin-left: 0.5rem;">
-                        PT ABCD DEFG <br>
+                        PT PLN (Persero) UPP Sulawesi Utara <br>
                     </span>
                     <span style="margin-left: 0.5rem;">
-                        <i>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium, vero.</i>
+                        <i>Jl. Bethesda No.32, Ranotana, Kec. Sario, Kota Manado, Sulawesi Utara</i>
                     </span>
                 </td>
             </tr>
@@ -116,7 +116,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Nama Karyawan</th>
+                    <th>Nama Tenaga Ahli Daya</th>
                     <th>Pekerjaan</th>
                     <th>Jumlah Kehadiran</th>
                     <th>Jumlah Terlambat</th>
@@ -129,10 +129,10 @@
                             {{ $value + 1 . "." }}
                         </td>
                         <td>
-                            {{ $item->nama_karyawan }} - {{ $item->user_id }}
+                            {{ $item->nama_karyawan }}
                         </td>
                         <td>
-                            {{ $item->jabatan_karyawan }} - {{ $item->nama_departemen }}
+                            {{ $item->nama_departemen }}
                         </td>
                         <td>
                             {{ $item->total_kehadiran }}
@@ -148,7 +148,7 @@
         <table class="pengesahan-atasan">
             <tr class="tempat">
                 <td colspan="2">
-                    Tenetur Nostrum, {{ \Carbon\Carbon::now()->format("d F Y") }}
+                    Manado, {{ \Carbon\Carbon::now()->format("d F Y") }}
                 </td>
             </tr>
             <tr class="atasan">

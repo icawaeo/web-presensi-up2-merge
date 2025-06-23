@@ -6,6 +6,7 @@ use App\Models\Departemen;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -165,22 +166,40 @@ class KaryawanController extends Controller
             return to_route('admin.karyawan')->with('error', 'Data User gagal diperbarui');
         }
 
-        // dd($update);
     }
 
     public function delete(Request $request)
     {
-        $data = Karyawan::where('user_id', $request->user_id)->first();
-        $delete = Karyawan::where('user_id', $request->user_id)->delete();
-        if ($delete && $data->foto) {
-            $folderPath = "public/unggah/karyawan/";
-            Storage::delete($folderPath . $data->foto);
-        }
+        DB::beginTransaction();
+        try {
+            $karyawan = Karyawan::where('user_id', $request->user_id)->first();
 
-        if ($delete) {
-            return response()->json(['success' => true, 'message' => 'Data User Berhasil dihapus']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Data User Gagal dihapus']);
+            if (!$karyawan) {
+                return response()->json(['success' => false, 'message' => 'Data User tidak ditemukan.']);
+            }
+
+            DB::table('presensi')->where('user_id', $request->user_id)->delete();
+
+            DB::table('pengajuan_presensi')->where('user_id', $request->user_id)->delete();
+            
+            if ($karyawan->foto) {
+                $folderPath = "public/unggah/karyawan/";
+                Storage::delete($folderPath . $karyawan->foto);
+            }
+
+            $delete = $karyawan->delete();
+
+            DB::commit(); 
+
+            if ($delete) {
+                return response()->json(['success' => true, 'message' => 'Data User dan semua data terkait berhasil dihapus.']);
+            } else {
+                DB::rollBack();
+                return response()->json(['success' => false, 'message' => 'Data User Gagal dihapus.']);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
 }
