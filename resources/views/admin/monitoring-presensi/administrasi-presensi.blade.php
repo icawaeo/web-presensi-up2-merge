@@ -25,10 +25,10 @@
                     </label>
                     <label class="form-control w-full max-w-xs">
                         <div class="label">
-                            <span class="label-text">Departemen</span>
+                            <span class="label-text">Pekerjaan</span>
                         </div>
                         <select name="departemen" class="select select-bordered">
-                            <option value="0">Semua Departemen</option>
+                            <option value="0">Semua Pekerjaan</option>
                             @foreach ($departemen as $item)
                                 <option value="{{ $item->id }}" {{ request()->departemen == $item->id ? "selected" : "" }}>{{ $item->nama }}</option>
                             @endforeach

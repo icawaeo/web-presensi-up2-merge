@@ -60,7 +60,7 @@ class KaryawanController extends Controller
 
     public function indexAdmin(Request $request)
     {
-        $title = "Data Karyawan";
+        $title = "Data Tenaga Ahli Daya";
 
         $departemen = Departemen::get();
 
@@ -78,19 +78,29 @@ class KaryawanController extends Controller
 
     public function store(Request $request)
     {
+        do {
+            $user_id = date('ymd') . mt_rand(100, 999);
+        } while (Karyawan::where('user_id', $user_id)->exists());
+
+        $request->merge([
+            'user_id' => $user_id,
+        ]);
+
         $data = $request->validate([
             'user_id' => 'required|unique:karyawan,user_id',
-            'pekerjaan_id' => 'required',
+            'departemen_id' => 'required',
             'nama_lengkap' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'pekerjaan' => 'required|string|max:255',
+            // 'jabatan' => 'required|string|max:255',
             'telepon' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:karyawan,email',
             'password' => 'required',
         ]);
+        
         $data['password'] = Hash::make($data['password']);
         if ($request->hasFile('foto')) {
             $foto = $request->user_id . "." . $request->file('foto')->getClientOriginalExtension();
+            $data['foto'] = $foto;
         }
 
         $create = Karyawan::create($data);
@@ -100,10 +110,14 @@ class KaryawanController extends Controller
                 $folderPath = "public/unggah/karyawan/";
                 $request->file('foto')->storeAs($folderPath, $foto);
             }
-            return to_route('admin.karyawan')->with('success', 'Data Karyawan berhasil disimpan');
-        } else {
-            return to_route('admin.karyawan')->with('error', 'Data Karyawan gagal disimpan');
+            return redirect()->route('admin.karyawan')->with('success', 'Data Karyawan berhasil disimpan');
         }
+
+        return redirect()->route('admin.karyawan')->with('error', 'Data Karyawan gagal disimpan');
+
+        // } else {
+        //     return to_route('admin.karyawan')->with('error', 'Data Karyawan gagal disimpan');
+        // }
     }
 
     public function edit(Request $request)
@@ -114,21 +128,32 @@ class KaryawanController extends Controller
 
     public function updateAdmin(Request $request)
     {
-        $karyawan = Karyawan::where('user_id', $request->user_id_lama)->first();
+        // dd('Method updateAdmin terpanggil');
+        // dd($request->all()); 
+        $karyawan = Karyawan::where('user_id', $request->user_id_lama)->firstOrFail();
         $data = $request->validate([
-            'user_id' => ['required', Rule::unique('karyawan')->ignore($karyawan)],
-            'pekerjaan_id' => 'required',
+            // 'user_id' => ['required', Rule::unique('karyawan')->ignore($karyawan)],
+            'departemen_id' => 'required',
             'nama_lengkap' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'pekerjaan' => 'required|string|max:255',
+            // 'pekerjaan' => 'required|string|max:255',
             'telepon' => 'required|string|max:15',
-            'email' => ['required', 'email', Rule::unique('karyawan')->ignore($karyawan)],
+            'email' => ['required', 'email', Rule::unique('karyawan')->ignore($karyawan->user_id, 'user_id')],
         ]);
+        
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->user_id . "." . $request->file('foto')->getClientOriginalExtension();
+            if ($karyawan->foto) {
+                Storage::delete("public/unggah/karyawan/" . $karyawan->foto);
+            }
+            
+            $foto_nama = $karyawan->user_id . "." . $request->file('foto')->getClientOriginalExtension();
+            $folderPath = "public/unggah/karyawan/";
+            $request->file('foto')->storeAs($folderPath, $foto_nama);
+            
+            $data['foto'] = $foto_nama;
         }
 
-        $update = Karyawan::where('user_id', $request->user_id_lama)->update($data);
+        $update = $karyawan->update($data);
 
         if ($update) {
             if ($request->hasFile('foto')) {
@@ -139,6 +164,8 @@ class KaryawanController extends Controller
         } else {
             return to_route('admin.karyawan')->with('error', 'Data User gagal diperbarui');
         }
+
+        // dd($update);
     }
 
     public function delete(Request $request)

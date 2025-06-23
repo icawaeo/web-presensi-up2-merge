@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __("Data Non Pegawai") }}
+                {{ __("Data Tenaga Ahli Daya") }}
             </h2>
             <label class="btn btn-primary btn-sm" for="create_modal">Tambah Data</label>
         </div>
@@ -32,7 +32,7 @@
                         <th></th>
                         <th>Nama Lengkap</th>
                         <th>Foto</th>
-                        <th>Jabatan</th>
+                        <th>Pekerjaan</th>
                         <th>Telepon</th>
                         <th>Email</th>
                         <th>Aksi</th>
@@ -42,7 +42,7 @@
                     @foreach ($karyawan as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $karyawan->firstItem() + $value }}</td>
-                            {{-- <td class="text-slate-500 dark:text-slate-300">{{ $item->departemen->kode }}</td> --}}
+                            
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_lengkap }}</td>
                             <td>
                                 <div class="avatar">
@@ -55,7 +55,13 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->jabatan }}</td>
+                            <td class="text-slate-500 dark:text-slate-300">
+                                @foreach ($departemen as $dept)
+                                    @if ($dept->id == $item->departemen_id)
+                                        {{ $dept->nama }}
+                                    @endif
+                                @endforeach
+                            </td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->telepon }}</td>
                             <td class="text-slate-500 dark:text-slate-300">{{ $item->email }}</td>
                             <td>
@@ -90,7 +96,7 @@
                 <form action="{{ route("admin.karyawan.store") }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <button type="reset" class="btn btn-neutral btn-sm">Reset</button>
-                    <label class="form-control w-full">
+                    {{-- <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
                                 <span class="label-text font-semibold">user_id<span class="text-red-500">*</span></span>
@@ -102,17 +108,18 @@
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
-                    </label>
+                    </label> --}}
+
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
-                                <span class="label-text font-semibold">Departemen<span class="text-red-500">*</span></span>
+                                <span class="label-text font-semibold">Pekerjaan<span class="text-red-500">*</span></span>
                             </span>
                         </div>
                         <select name="departemen_id" class="select select-bordered w-full text-blue-700">
-                            <option disabled selected>Pilih Departemen!</option>
+                            <option disabled selected>Pilih Pekerjaan</option>
                             @foreach ($departemen as $item)
-                                <option value="{{ $item->id }}" @if ($item->id == old("departemen_id")) selected @endif>{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
                         @error("departemen_id")
@@ -121,20 +128,22 @@
                             </div>
                         @enderror
                     </label>
+
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
                                 <span class="label-text font-semibold">Nama Lengkap<span class="text-red-500">*</span></span>
                             </span>
                         </div>
-                        <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" class="input input-bordered w-full text-blue-700" value="{{ old("nama_lengkap") }}" required />
+                        <input type="text" name="nama_lengkap" id="nama_lengkap_edit" placeholder="Nama Lengkap" class="input input-bordered w-full text-blue-700" value="{{ old("nama_lengkap") }}" required />
                         @error("nama_lengkap")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
                     </label>
-                    <label class="form-control w-full">
+
+                    {{-- <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
                                 <span class="label-text font-semibold">Jabatan<span class="text-red-500">*</span></span>
@@ -146,14 +155,15 @@
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
-                    </label>
+                    </label> --}}
+
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">
                                 <span class="label-text font-semibold">Telepon<span class="text-red-500">*</span></span>
                             </span>
                         </div>
-                        <input type="text" name="telepon" placeholder="Telepon" class="input input-bordered w-full text-blue-700" value="{{ old("telepon") }}" required />
+                        <input type="text" name="telepon" id="telepon_edit" placeholder="Telepon" class="input input-bordered w-full text-blue-700" value="{{ old("telepon") }}" required />
                         @error("telepon")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
@@ -166,7 +176,7 @@
                                 <span class="label-text font-semibold">Email<span class="text-red-500">*</span></span>
                             </span>
                         </div>
-                        <input type="email" name="email" placeholder="Email" class="input input-bordered w-full text-blue-700" value="{{ old("email") }}" required />
+                        <input type="email" name="email" id="email_edit" placeholder="Email" class="input input-bordered w-full text-blue-700" value="{{ old("email") }}" required />
                         @error("email")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
@@ -220,10 +230,10 @@
                 </label>
             </div>
             <div>
-                <form action="{{ route("admin.karyawan.update") }}" method="POST" enctype="multipart/form-data">
+                <form id="edit_form" action="{{ route("admin.karyawan.update") }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="text" name="user_id_lama" hidden>
-                    <label class="form-control w-full">
+                    <input type="hidden" name="user_id_lama" id="user_id_lama_edit">
+                    {{-- <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">user_id<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit1"></span>
@@ -234,13 +244,14 @@
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
-                    </label>
+                    </label> --}}
+
                     <label class="form-control w-full">
                         <div class="label">
-                            <span class="label-text font-semibold">Departemen<span class="text-red-500">*</span></span>
+                            <span class="label-text font-semibold">Pekerjaan<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit2"></span>
                         </div>
-                        <select name="departemen_id" id='departemen_id' class="select select-bordered w-full text-blue-700">
+                        <select name="departemen_id" id="departemen_id_edit" class="select select-bordered w-full text-blue-700">
                         </select>
                         @error("departemen_id")
                             <div class="label">
@@ -248,19 +259,20 @@
                             </div>
                         @enderror
                     </label>
+                    
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">Nama Lengkap<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit3"></span>
                         </div>
-                        <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" class="input input-bordered w-full text-blue-700" required />
+                        <input type="text" name="nama_lengkap" id="nama_lengkap_edit" placeholder="Nama Lengkap" class="input input-bordered w-full text-blue-700" required />
                         @error("nama_lengkap")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
                     </label>
-                    <label class="form-control w-full">
+                    {{-- <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">Jabatan<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit4"></span>
@@ -271,13 +283,13 @@
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
                             </div>
                         @enderror
-                    </label>
+                    </label> --}}
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text font-semibold">Telepon<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit5"></span>
                         </div>
-                        <input type="text" name="telepon" placeholder="Telepon" class="input input-bordered w-full text-blue-700" required />
+                        <input type="text" name="telepon" id="telepon_edit" placeholder="Telepon" class="input input-bordered w-full text-blue-700" required />
                         @error("telepon")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
@@ -289,7 +301,7 @@
                             <span class="label-text font-semibold">Email<span class="text-red-500">*</span></span>
                             <span class="label-text-alt" id="loading_edit6"></span>
                         </div>
-                        <input type="email" name="email" placeholder="Email" class="input input-bordered w-full text-blue-700" required />
+                        <input type="email" name="email" id="email_edit" placeholder="Email" class="input input-bordered w-full text-blue-700" required />
                         @error("email")
                             <div class="label">
                                 <span class="label-text-alt text-sm text-error">{{ $message }}</span>
@@ -368,62 +380,36 @@
         @endif
 
         function edit_button(user_id) {
-            // Loading effect start
-            let loading = `<span class="loading loading-dots loading-md text-purple-600"></span>`;
-            $("#loading_edit1").html(loading);
-            $("#loading_edit2").html(loading);
-            $("#loading_edit3").html(loading);
-            $("#loading_edit4").html(loading);
-            $("#loading_edit5").html(loading);
-            $("#loading_edit6").html(loading);
-            $("#loading_edit7").html(loading);
-
-            $("select[id='departemen_id']").children().remove().end();
-
+            $('#edit_form')[0].reset();
+            $(".foto-edit-preview").attr("src", "").hide();
+            
             $.ajax({
                 type: "get",
                 url: "{{ route('admin.karyawan.edit') }}",
                 data: {
-                    "_token": "{{ csrf_token() }}",
-                    "user_id": user_id
+                    _token: "{{ csrf_token() }}",
+                    user_id: user_id
                 },
                 success: function(data) {
-                    // console.log(data);
-                    let items = [];
-                    $.each(data, function(key, val) {
-                        items.push(val);
-                    });
-
-                    $("input[name='user_id_lama']").val(items[0]);
-                    $("input[name='user_id']").val(items[0]);
-                    $("input[name='nama_lengkap']").val(items[2]);
-                    $("input[name='jabatan']").val(items[4]);
-                    $("input[name='telepon']").val(items[5]);
-                    $("input[name='email']").val(items[6]);
+                    $('#user_id_lama_edit').val(data.user_id);
+                    $('#nama_lengkap_edit').val(data.nama_lengkap);
+                    $('#telepon_edit').val(data.telepon);
+                    $('#email_edit').val(data.email);
 
                     const departemen = @json($departemen);
-                    let options = '<option disabled>Pilih Departemen!</option>';
+                    let options = '<option disabled>Pilih Pekerjaan</option>';
                     departemen.forEach(item => {
-                        const isSelected = item.id == items[1] ? 'selected' : '';
+                        const isSelected = item.id == data.departemen_id ? 'selected' : '';
                         options += `<option value="${item.id}" ${isSelected}>${item.nama}</option>`;
                     });
-                    $("select[id='departemen_id']").html(options);
+                    $('#departemen_id_edit').html(options);
 
-                    if (items[3] != null) {
-                        $(".foto-edit-preview").attr("src", `{{ asset('storage/unggah/karyawan/${items[3]}') }}`);
-                    } else {
-                        $(".foto-edit-preview").attr("src", ``);
+                    if (data.foto) {
+                        $(".foto-edit-preview").attr("src", `/storage/unggah/karyawan/${data.foto}`).show();
                     }
-
-                    // Loading effect end
-                    loading = "";
-                    $("#loading_edit1").html(loading);
-                    $("#loading_edit2").html(loading);
-                    $("#loading_edit3").html(loading);
-                    $("#loading_edit4").html(loading);
-                    $("#loading_edit5").html(loading);
-                    $("#loading_edit6").html(loading);
-                    $("#loading_edit7").html(loading);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Gagal mengambil data edit:", error);
                 }
             });
         }
@@ -434,7 +420,7 @@
                 html: "<p>Data yang dihapus tidak dapat dipulihkan kembali!</p>" +
                     "<div class='divider'></div>" +
                     "<div class='flex flex-col'>" +
-                    "<b>Karyawan: " + nama + "</b>" +
+                    "<b>User: " + nama + "</b>" +
                     "</div>",
                 icon: 'warning',
                 showCancelButton: true,

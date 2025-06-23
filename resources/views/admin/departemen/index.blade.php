@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __("Data Departemen") }}
+                {{ __("Data Pekerjaan") }}
             </h2>
             <label class="btn btn-primary btn-sm" for="create_modal">Tambah Data</label>
         </div>
@@ -205,7 +205,7 @@
                 html: "<p>Data yang dihapus tidak dapat dipulihkan kembali!</p>" +
                     "<div class='divider'></div>" +
                     "<div class='flex flex-col'>" +
-                    "<b>Karyawan: " + nama + "</b>" +
+                    "<b>User: " + nama + "</b>" +
                     "</div>",
                 icon: 'warning',
                 showCancelButton: true,

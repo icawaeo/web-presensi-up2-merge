@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('admin.dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('img/logo-pln.png') }}" class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
@@ -19,13 +19,13 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('admin.karyawan')" :active="request()->routeIs('admin.karyawan')">
-                        {{ __('Data Karyawan') }}
+                        {{ __('Data Tenaga Ahli Daya') }}
                     </x-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('admin.departemen')" :active="request()->routeIs('admin.departemen')">
-                        {{ __('Data Departemen') }}
+                        {{ __('Data Pekerjaan') }}
                     </x-nav-link>
                 </div>
 
@@ -110,13 +110,13 @@
 
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('admin.karyawan')" :active="request()->routeIs('admin.karyawan')">
-                {{ __('Data Karyawan') }}
+                {{ __('Data Tenaga Ahli Daya') }}
             </x-responsive-nav-link>
         </div>
 
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('admin.departemen')" :active="request()->routeIs('admin.departemen')">
-                {{ __('Data Departemen') }}
+                {{ __('Data Pekerjaan') }}
             </x-responsive-nav-link>
         </div>
 

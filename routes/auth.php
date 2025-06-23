@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 // Hapus middleware 'login-karyawan' dari grup ini
 Route::middleware('guest')->group(function () {
     // Rute registrasi bisa diaktifkan jika perlu
-    // Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    // Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
     // Hapus rute login dari sini karena sudah kita pindah ke web.php
     // Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
