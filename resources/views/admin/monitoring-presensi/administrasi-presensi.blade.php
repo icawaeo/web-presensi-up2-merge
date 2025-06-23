@@ -62,7 +62,7 @@
                         </div>
                         <select name="status_approved" class="select select-bordered">
                             <option value="0">Semua Aksi</option>
-                            <option value="1" {{ request()->status_approved == 1 ? "selected" : "" }}>Pending</option>
+                            <option value="1" {{ request()->status_approved == 1 ? "selected" : "" }}>Menunggu Persetujuan</option>
                             <option value="2" {{ request()->status_approved == 2 ? "selected" : "" }}>Diterima</option>
                             <option value="3" {{ request()->status_approved == 3 ? "selected" : "" }}>Ditolak</option>
                         </select>

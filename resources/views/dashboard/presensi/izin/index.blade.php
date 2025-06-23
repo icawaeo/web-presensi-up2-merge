@@ -118,11 +118,12 @@
                                                 @endif
                                             </td>
                                             <td class="text-slate-500 dark:text-slate-300">
-                                                @if ($item->status_approved == 0)
-                                                    <div class="badge badge-neutral dark:bg-slate-300 dark:text-slate-700">Pending</div>
-                                                @elseif ($item->status_approved == 1)
-                                                    <div class="badge badge-success">Disetujui</div>
+                                                {{-- KODE YANG SUDAH DIPERBAIKI --}}
+                                                @if ($item->status_approved == 1)
+                                                    <div class="badge badge-warning">Menunggu Persetujuan</div>
                                                 @elseif ($item->status_approved == 2)
+                                                    <div class="badge badge-success">Disetujui</div>
+                                                @elseif ($item->status_approved == 3)
                                                     <div class="badge badge-error">Ditolak</div>
                                                 @endif
                                             </td>

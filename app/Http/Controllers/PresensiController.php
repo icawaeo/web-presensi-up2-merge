@@ -183,10 +183,7 @@ class PresensiController extends Controller
         $cekPengajuan = DB::table('pengajuan_presensi')
             ->where('user_id', auth()->guard('karyawan')->user()->user_id)
             ->whereDate('tanggal_pengajuan', Carbon::make($tanggal_pengajuan)->format('Y-m-d'))
-            ->where(function (Builder $query) {
-                $query->where('status_approved', 0)
-                    ->orWhere('status_approved', 1);
-            })
+            ->whereIn('status_approved', [1, 2])
             ->first();
 
         if ($cekPengajuan) {
@@ -197,6 +194,7 @@ class PresensiController extends Controller
                 'tanggal_pengajuan' => $tanggal_pengajuan,
                 'status' => $status,
                 'keterangan' => $keterangan,
+                'status_approved' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
