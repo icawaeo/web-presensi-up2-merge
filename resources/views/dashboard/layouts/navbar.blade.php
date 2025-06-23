@@ -2,12 +2,12 @@
     <div class="flex-wrap-inherit mx-auto flex w-full items-center justify-between px-4 py-1">
         <nav>
             <!-- breadcrumb -->
-            <ol class="mr-12 flex flex-wrap rounded-lg bg-transparent pt-1 sm:mr-16">
+            {{-- <ol class="mr-12 flex flex-wrap rounded-lg bg-transparent pt-1 sm:mr-16">
                 <li class="text-sm leading-normal">
                     <a class="text-white opacity-50" href="javascript:;">Pages</a>
                 </li>
                 <li class="pl-2 text-sm capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">{{ $title }}</li>
-            </ol>
+            </ol> --}}
             <h6 class="mb-0 font-bold capitalize text-white">{{ $title }}</h6>
         </nav>
 

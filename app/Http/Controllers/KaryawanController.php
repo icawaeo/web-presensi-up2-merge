@@ -15,7 +15,7 @@ class KaryawanController extends Controller
 {
     public function index()
     {
-        $title = "Profile";
+        $title = "Profil Akun";
         $karyawan = Karyawan::where('user_id', auth()->guard('karyawan')->user()->user_id)->first();
         return view('dashboard.profile.index', compact('title', 'karyawan'));
     }

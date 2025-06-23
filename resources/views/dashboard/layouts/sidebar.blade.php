@@ -44,7 +44,7 @@
                     <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                         <i class="ri-calendar-close-fill relative top-0 text-lg leading-normal text-red-500"></i>
                     </div>
-                    <span class="ease pointer-events-none ml-1 opacity-100 duration-300">Izin</span>
+                    <span class="ease pointer-events-none ml-1 opacity-100 duration-300">Pengajuan Izin</span>
                 </a>
             </li>
 
@@ -53,7 +53,7 @@
                     <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                         <i class="ri-user-3-fill relative top-0 text-lg leading-normal text-blue-500"></i>
                     </div>
-                    <span class="ease pointer-events-none ml-1 opacity-100 duration-300">Profile</span>
+                    <span class="ease pointer-events-none ml-1 opacity-100 duration-300">Profil Akun</span>
                 </a>
             </li>
 

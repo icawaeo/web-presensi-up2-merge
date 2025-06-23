@@ -157,7 +157,7 @@ class PresensiController extends Controller
 
     public function pengajuanPresensi()
     {
-        $title = "Izin Karyawan";
+        $title = "Pengajuan Izin";
         $riwayatPengajuanPresensi = DB::table("pengajuan_presensi")
             ->where('user_id', auth()->guard('karyawan')->user()->user_id)
             ->orderBy("tanggal_pengajuan", "asc")
@@ -207,7 +207,7 @@ class PresensiController extends Controller
             return to_route('karyawan.izin')->with("error", "Gagal menambahkan pengajuan");
         }
     }
-
+    
     public function searchPengajuanHistory(Request $request)
     {
         $bulan = $request->bulan;
