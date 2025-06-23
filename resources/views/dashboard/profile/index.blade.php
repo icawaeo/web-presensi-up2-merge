@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="md:flex-0 mt-6 w-full max-w-full shrink-0 px-3 md:mt-0 md:w-4/12">
+            <div class="md:flex-0 mt-6 w-full max-w-full shrink-0 px-3 md:mt-0 mb-1 md:w-4/12">
                 @if ($karyawan->foto)
                     <img src="{{ asset("storage/unggah/karyawan/$karyawan->foto") }}" class="img-preview mb-3 rounded" />
                 @else
