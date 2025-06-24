@@ -106,8 +106,9 @@
                 $("#lokasi-status").html(`<span class="text-danger">${message}</span>`);
             }
 
-            let notifikasi_presensi_masuk = document.getElementById('notifikasi_presensi_masuk');
-            let notifikasi_presensi_keluar = document.getElementById('notifikasi_presensi_keluar');
+            let notifikasi_masuk_dalam_radius = document.getElementById('notifikasi_presensi_masuk_dalam_radius');
+            let notifikasi_masuk_luar_radius = document.getElementById('notifikasi_presensi_masuk_luar_radius');
+            let notifikasi_keluar = document.getElementById('notifikasi_presensi_keluar');
             
             $(".btn-presensi").click(function() {
                 Webcam.snap(function(uri) {
@@ -129,12 +130,14 @@
                             let notifMessage = "Presensi Anda telah berhasil direkam.";
                             
                             if (res.jenis_presensi == "masuk") {
-                                notifikasi_presensi_masuk.play();
-                                if (res.status_radius == "out") {
+                                if (res.status_radius == "in") {
+                                    notifikasi_masuk_dalam_radius.play();
+                                } else if (res.status_radius == "out") {
+                                    notifikasi_masuk_luar_radius.play();
                                     notifMessage = "Presensi berhasil, namun Anda terdeteksi berada di luar radius kantor.";
                                 }
                             } else if (res.jenis_presensi == "keluar") {
-                                notifikasi_presensi_keluar.play();
+                                notifikasi_keluar.play();
                             }
 
                             Swal.fire({
@@ -162,14 +165,14 @@
 
 @section("container")
     <div>
-        <audio id="notifikasi_presensi_masuk">
-            <source src="{{ asset("audio/notifikasi_presensi_masuk.mp3") }}" type="audio/mpeg">
+        <audio id="notifikasi_presensi_masuk_dalam_radius">
+            <source src="{{ asset("audio/notifikasi_presensi_masuk_dalam_radius.mp3") }}" type="audio/mpeg">
+        </audio>
+        <audio id="notifikasi_presensi_masuk_luar_radius">
+            <source src="{{ asset("audio/notifikasi_presensi_masuk_diluar_radius.mp3") }}" type="audio/mpeg">
         </audio>
         <audio id="notifikasi_presensi_keluar">
-            <source src="{{ asset("audio/notifikasi_presensi_keluar.mp3") }}" type="audio/mpeg">
-        </audio>
-        <audio id="notifikasi_presensi_gagal_radius">
-            <source src="{{ asset("audio/notifikasi_presensi_gagal_radius.mp3") }}" type="audio/mpeg">
+            <source src="{{ asset("audio/notifikasi_sesudah_bekerja.mp3") }}" type="audio/mpeg">
         </audio>
         <div class="-mx-3 flex flex-wrap">
             <div class="mb-6 w-full max-w-full px-3 sm:flex-none">
