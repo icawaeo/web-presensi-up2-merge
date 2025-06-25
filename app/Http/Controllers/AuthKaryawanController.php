@@ -16,7 +16,7 @@ class AuthKaryawanController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login-karyawan');
+        return view('auth.guest');
     }
 
     /**
@@ -42,6 +42,6 @@ class AuthKaryawanController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login-karyawan');
+        return redirect('/guest');
     }
 }
