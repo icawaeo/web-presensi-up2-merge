@@ -111,52 +111,74 @@
             let notifikasi_keluar = document.getElementById('notifikasi_presensi_keluar');
             
             $(".btn-presensi").click(function() {
+                const tombol = $(this);
+                const teksAsliTombol = tombol.html();
+                let image; 
+
+                tombol.prop('disabled', true);
+                tombol.html('<span class="loading loading-spinner loading-sm"></span> Mengirim...');
+
                 Webcam.snap(function(uri) {
                     image = uri;
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route("karyawan.presensi.store") }}",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        image: image,
-                        lokasi: lokasi.value,
-                        jenis: $("input[name='presensi']").val(),
-                    },
-                    cache: false,
-                    success: function(res) {
-                        if (res.status == 200) {
-                            let notifTitle = "Berhasil";
-                            let notifMessage = "Presensi Anda telah berhasil direkam.";
-                            
-                            if (res.jenis_presensi == "masuk") {
-                                if (res.status_radius == "in") {
-                                    notifikasi_masuk_dalam_radius.play();
-                                } else if (res.status_radius == "out") {
-                                    notifikasi_masuk_luar_radius.play();
-                                    notifMessage = "Presensi berhasil, namun Anda terdeteksi berada di luar radius kantor.";
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route("karyawan.presensi.store") }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            image: image,
+                            lokasi: lokasi.value,
+                            jenis: $("input[name='presensi']").val(),
+                        },
+                        cache: false,
+                        success: function(res) {
+                            if (res.status == 200) {
+                                let notifTitle = "Berhasil";
+                                let notifMessage = "Presensi Anda telah berhasil direkam.";
+                                
+                                if (res.jenis_presensi == "masuk") {
+                                    if (res.status_radius == "in") {
+                                        notifikasi_masuk_dalam_radius.play();
+                                    } else if (res.status_radius == "out") {
+                                        notifikasi_masuk_luar_radius.play();
+                                        notifMessage = "Presensi berhasil, namun Anda terdeteksi berada di luar radius kantor.";
+                                    }
+                                } else if (res.jenis_presensi == "keluar") {
+                                    notifikasi_keluar.play();
                                 }
-                            } else if (res.jenis_presensi == "keluar") {
-                                notifikasi_keluar.play();
+
+                                Swal.fire({
+                                    title: notifTitle,
+                                    text: notifMessage,
+                                    icon: "success",
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    location.href = '{{ route("karyawan.dashboard") }}';
+                                });
+
+                            } else {
+                                Swal.fire({
+                                    title: "Presensi Gagal",
+                                    text: res.message || "Terjadi kesalahan dari server.",
+                                    icon: "error",
+                                    confirmButtonText: "OK"
+                                });
+                                tombol.prop('disabled', false);
+                                tombol.html(teksAsliTombol);
                             }
-
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
                             Swal.fire({
-                                title: notifTitle,
-                                text: notifMessage,
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            });
-                            setTimeout("location.href='{{ route("karyawan.dashboard") }}'", 5000);
-
-                        } else if (res.status == 500) {
-                            Swal.fire({
-                                title: "Presensi Gagal",
-                                text: res.message,
+                                title: "Koneksi Gagal",
+                                text: "Tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda dan coba lagi.",
                                 icon: "error",
                                 confirmButtonText: "OK"
                             });
+                            tombol.prop('disabled', false);
+                            tombol.html(teksAsliTombol);
                         }
-                    }
+                    });
                 });
             });
         });
