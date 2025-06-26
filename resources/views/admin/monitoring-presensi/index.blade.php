@@ -20,7 +20,7 @@
         </div>
         <div class="w-full overflow-x-auto rounded-md bg-slate-200 px-10">
             <table id="tabelPresensi" class="table mb-4 w-full border-collapse items-center border-gray-200 align-top dark:border-white/40">
-                <thead class="text-sm text-gray-800 dark:text-gray-300">
+                <thead class="text-sm text-gray-800 dark:text-gray-800">
                     <tr>
                         <th></th>
                         <th>Nama Tenaga Ahli Daya</th>
@@ -37,36 +37,36 @@
                     @foreach ($monitoring as $value => $item)
                         <tr class="hover">
                             <td class="font-bold">{{ $monitoring->firstItem() + $value }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_karyawan }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->nama_departemen }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->email }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">{{ $item->jam_masuk }}</td>
-                            <td class="text-slate-500 dark:text-slate-300">
+                            <td class="text-slate-800 dark:text-slate-800">{{ $item->nama_karyawan }}</td>
+                            <td class="text-slate-800 dark:text-slate-800">{{ $item->nama_departemen }}</td>
+                            <td class="text-slate-800 dark:text-slate-800">{{ $item->email }}</td>
+                            <td class="text-slate-800 dark:text-slate-800">{{ $item->jam_masuk }}</td>
+                            <td class="text-slate-800 dark:text-slate-800">
                                 <div class="avatar">
                                     <div class="w-24 rounded">
                                         {{-- REVISI: Kirim koordinat yang benar langsung ke fungsi JS --}}
                                         @if ($item->foto_masuk && $item->lokasi_masuk)
                                             <label for="view_modal" class="cursor-pointer" onclick="return showMapModal('{{ $item->lokasi_masuk }}')">
-                                                <img src="{{ asset("storage/unggah/presensi/$item->foto_masuk") }}" alt="{{ $item->foto_masuk }}" />
+                                                <img src="{{ asset('/public/storage/unggah/presensi/' . $item->foto_masuk) }}" alt="{{ $item->foto_masuk }}" style="width: auto; height: 100px;" />
                                             </label>
                                         @endif
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-slate-500 dark:text-slate-300">
+                            <td class="text-slate-800 dark:text-slate-800">
                                 @if ($item->jam_keluar)
                                     {{ $item->jam_keluar }}
                                 @else
                                     <div class="w-fit rounded-md bg-error p-1 text-white">Belum Presensi</div>
                                 @endif
                             </td>
-                            <td class="text-slate-500 dark:text-slate-300">
+                            <td class="text-slate-800 dark:text-slate-800">
                                 <div class="avatar">
                                     <div class="w-24 rounded">
                                         {{-- REVISI: Kirim koordinat yang benar langsung ke fungsi JS --}}
                                         @if ($item->foto_keluar && $item->lokasi_keluar)
                                             <label for="view_modal" class="cursor-pointer" onclick="return showMapModal('{{ $item->lokasi_keluar }}')">
-                                                <img src="{{ asset("storage/unggah/presensi/$item->foto_keluar") }}" alt="{{ $item->foto_keluar }}" />
+                                                <img src="{{ asset('storage/unggah/presensi/' . $item->foto_keluar) }}" alt="{{ $item->foto_keluar }}" style="width: auto; height: 100px;" />
                                             </label>
                                         @else
                                             <span></span>
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-slate-500 dark:text-slate-300">
+                            <td class="text-slate-800 dark:text-slate-800">
                                 @if ($item->jam_masuk > Carbon\Carbon::make("08:00:00")->format("H:i:s"))
                                     @php
                                         $masuk = Carbon\Carbon::make($item->jam_masuk);
@@ -96,7 +96,7 @@
                 </tbody>
             </table>
             <div class="mx-3 mb-5">
-                {{ $monitoring->links() }}
+                {{ $monitoring->appends(request()->all())->links() }}
             </div>
         </div>
     </div>
