@@ -15,8 +15,8 @@
                 @csrf
                 <div class="flex w-full flex-wrap gap-2 lg:flex-nowrap">
                     <input type="month" name="bulan" class="input input-bordered w-full" value="{{ Carbon\Carbon::now()->format("Y-m") }}" required />
-                    <select name="karyawan" class="select select-bordered w-full text-blue-700" required>
-                        <option disabled selected>Pilih Tenaga Ahli Daya</option>
+                    <select id="selectKaryawan" name="karyawan" class="select select-bordered w-full text-blue-700" required>
+                        <option value="" disabled selected>Pilih Tenaga Ahli Daya</option>
                         @foreach ($karyawan as $item)
                             <option value="{{ $item->user_id }}">{{ $item->nama_lengkap }}</option>
                         @endforeach
@@ -47,4 +47,20 @@
             </form>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectKaryawan = document.getElementById('selectKaryawan');
+
+            if (selectKaryawan) {
+                selectKaryawan.addEventListener('invalid', function(event){
+                    event.preventDefault();
+                    alert('Silakan pilih nama Tenaga Ahli Daya terlebih dahulu.');
+                });
+            }
+        });
+    </script>
+    @endpush
+
 </x-app-layout>
