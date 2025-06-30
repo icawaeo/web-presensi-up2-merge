@@ -12,6 +12,9 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LaporanPresensiExport;
+use App\Exports\LaporanPresensiKaryawanExport;
 
 class PresensiController extends Controller
 {
@@ -287,6 +290,26 @@ class PresensiController extends Controller
         return $pdf->stream($title . ' ' . $karyawan->nama_lengkap . '.pdf');
     }
 
+    public function laporanPresensiKaryawanExcel(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|date_format:Y-m',
+            'karyawan' => 'required',
+        ]);
+
+        $bulan = $request->bulan;
+        $userId = $request->karyawan;
+
+        $karyawan = Karyawan::where('user_id', $userId)->first();
+        if (!$karyawan) {
+            return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
+        }
+
+        $namaFile = 'laporan-presensi-' . str_replace(' ', '-', $karyawan->nama_lengkap) . '-' . Carbon::make($bulan)->format('F-Y') . '.xlsx';
+
+        return Excel::download(new LaporanPresensiKaryawanExport($bulan, $userId), $namaFile);
+    }
+
     public function laporanPresensiSemuaKaryawan(Request $request)
     {
         $title = 'Ringkasan Presensi Bulanan Tenaga Ahli Daya';
@@ -315,6 +338,18 @@ class PresensiController extends Controller
         // return view('admin.laporan.pdf.presensi-semua-karyawan', compact('title', 'bulan', 'riwayatPresensi'));
         $pdf = Pdf::loadView('admin.laporan.pdf.presensi-semua-karyawan', compact('title', 'bulan', 'riwayatPresensi'));
         return $pdf->stream($title . '.pdf');
+    }
+
+    public function laporanPresensiSemuaKaryawanExcel(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|date_format:Y-m',
+        ]);
+
+        $bulan = $request->bulan;
+        $namaFile = 'ringkasan-presensi-' . Carbon::make($bulan)->format('F-Y') . '.xlsx';
+
+        return Excel::download(new LaporanPresensiExport($bulan), $namaFile);
     }
 
     public function indexAdmin(Request $request)

@@ -93,7 +93,9 @@ Route::group([
 
     Route::get('/laporan/presensi', [PresensiController::class, 'laporan'])->name('admin.laporan.presensi');
     Route::post('/laporan/presensi/karyawan', [PresensiController::class, 'laporanPresensiKaryawan'])->name('admin.laporan.presensi.karyawan');
+    Route::post('/laporan/presensi/karyawan/excel', [PresensiController::class, 'laporanPresensiKaryawanExcel'])->name('admin.laporan.presensi.karyawan.excel');
     Route::post('/laporan/presensi/semua-karyawan', [PresensiController::class, 'laporanPresensiSemuaKaryawan'])->name('admin.laporan.presensi.semua-karyawan');
+    Route::post('/laporan/presensi/semua-karyawan/excel', [PresensiController::class, 'laporanPresensiSemuaKaryawanExcel'])->name('admin.laporan.presensi.semua-karyawan.excel');
 
     Route::get('/lokasi', [LokasiKantorController::class, 'index'])->name('admin.lokasi-kantor');
     Route::post('/lokasi/tambah', [LokasiKantorController::class, 'store'])->name('admin.lokasi-kantor.store');

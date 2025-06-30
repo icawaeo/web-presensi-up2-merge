@@ -24,6 +24,9 @@
                     <button type="submit" class="btn btn-error w-full lg:w-14">
                         <i class="ri-file-pdf-2-fill text-lg text-white"></i>
                     </button>
+                    <button type="submit" formaction="{{ route('admin.laporan.presensi.karyawan.excel') }}" class="btn btn-success w-full lg:w-14 tooltip" data-tip="Export Excel">
+                        <i class="ri-file-excel-2-line text-lg text-white"></i>
+                    </button>
                 </div>
             </form>
         </div>
@@ -36,6 +39,9 @@
                     <input type="month" name="bulan" class="input input-bordered w-full" value="{{ Carbon\Carbon::now()->format("Y-m") }}" required />
                     <button type="submit" class="btn btn-error w-full lg:w-14">
                         <i class="ri-file-pdf-2-fill text-lg text-white"></i>
+                    </button>
+                    <button type="submit" formaction="{{ route('admin.laporan.presensi.semua-karyawan.excel') }}" class="btn btn-success w-full lg:w-14 tooltip" data-tip="Export Excel">
+                        <i class="ri-file-excel-2-line text-lg text-white"></i>
                     </button>
                 </div>
             </form>
